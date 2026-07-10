@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.footer-nav {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-logo {
+  margin-bottom: 0.5rem;
+}
+
+.footer-message {
+  font-family: var(--font-serif-body);
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  font-style: italic;
+}
+
+.footer-copyright {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}

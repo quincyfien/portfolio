@@ -1,0 +1,100 @@
+/* ==========================================================================
+   Skills Section
+   ========================================================================== */
+
+.skills-tabs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.skills-tabs-header {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.skills-tab-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-serif-display);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--border-radius-sm);
+}
+
+.skills-tab-btn.active {
+  border-color: var(--color-gold);
+  color: var(--color-gold-dark);
+  background: var(--color-gold-glow);
+}
+
+.skills-tab-btn:hover:not(.active) {
+  border-color: var(--border-color-hover);
+  color: var(--text-primary);
+}
+
+/* Category groups */
+
+.skills-category-group {
+  margin-bottom: 2.25rem;
+}
+
+.skills-category-group:last-child {
+  margin-bottom: 0;
+}
+
+.skills-category-heading {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.skills-category-title {
+  font-family: var(--font-serif-display);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-dark);
+  margin-bottom: 0.25rem;
+}
+
+.skills-category-desc {
+  font-family: var(--font-serif-body);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Chip grid */
+
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.skill-chip {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  transition: var(--transition-fast);
+  cursor: default;
+  white-space: nowrap;
+}
+
+.skill-chip:hover {
+  border-color: var(--color-gold);
+  background: var(--color-gold-glow);
+  color: var(--color-gold-dark);
+}

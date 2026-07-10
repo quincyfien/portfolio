@@ -1,0 +1,448 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   Design Tokens & Themes
+   ========================================================================== */
+
+:root {
+  --font-serif-display: 'Cinzel', serif;
+  --font-serif-body: 'Cormorant Garamond', serif;
+  --font-sans: 'Outfit', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.2s ease;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+
+  /* LIGHT MODE */
+  --bg-primary: #FDFBF7;
+  --bg-secondary: #F7F4EB;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-card: #FFFFFF;
+  --bg-input: #FFFFFF;
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+
+  --color-gold: #C5A880;
+  --color-gold-dark: #A6865A;
+  --color-gold-light: #E2D5C3;
+  --color-gold-glow: rgba(197, 168, 128, 0.3);
+
+  --border-color: rgba(197, 168, 128, 0.3);
+  --border-color-hover: rgba(166, 134, 90, 0.6);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(197, 168, 128, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 20px 25px -5px rgba(197, 168, 128, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+
+  --cyber-indicator: #0F172A;
+  --card-overlay: rgba(197, 168, 128, 0.03);
+}
+
+/* DARK MODE */
+[data-theme='dark'] {
+  --bg-primary: #0A0A0C;
+  --bg-secondary: #111115;
+  --bg-glass: rgba(13, 13, 17, 0.75);
+  --bg-card: #131318;
+  --bg-input: #17171E;
+
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  --color-gold: #E5C158;
+  --color-gold-dark: #C29F38;
+  --color-gold-light: #F0DA94;
+  --color-gold-glow: rgba(229, 193, 88, 0.2);
+
+  --border-color: rgba(229, 193, 88, 0.15);
+  --border-color-hover: rgba(229, 193, 88, 0.4);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+
+  --cyber-indicator: #E5C158;
+  --card-overlay: rgba(229, 193, 88, 0.02);
+}
+
+/* ==========================================================================
+   Base Styles & Resets
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold-dark);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+::selection {
+  background-color: var(--color-gold-glow);
+  color: var(--text-primary);
+}
+
+/* Skip-to-content link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 200;
+  background: var(--color-gold);
+  color: #0F172A;
+  font-family: var(--font-serif-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+/* ==========================================================================
+   Typography & Utilities
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif-display);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+  margin-bottom: 0.5em;
+}
+
+p {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.serif-body-text {
+  font-family: var(--font-serif-body);
+  font-size: 1.35rem;
+  line-height: 1.7;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Aristocratic decorative borders & dividers */
+.aristocratic-border {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  position: relative;
+}
+
+.aristocratic-border::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px solid var(--border-color);
+  pointer-events: none;
+}
+
+.double-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem 0;
+}
+
+.double-divider::before,
+.double-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border-color), transparent);
+}
+
+.double-divider-center {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--color-gold);
+  transform: rotate(45deg);
+  margin: 0 1rem;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.double-divider-center::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: var(--color-gold);
+}
+
+/* ==========================================================================
+   Layout Containers
+   ========================================================================== */
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.main-content {
+  flex-grow: 1;
+}
+
+.section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-gold-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+/* Glass panel */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-md);
+  transition: var(--transition-smooth);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-color-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-serif-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  gap: 0.5rem;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background-color: var(--color-gold);
+  color: #0F172A;
+  box-shadow: 0 4px 14px 0 var(--color-gold-glow);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 var(--color-gold-glow);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--color-gold);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-gold-glow);
+  transform: translateY(-2px);
+  border-color: var(--color-gold-dark);
+}
+
+.btn-text {
+  background-color: transparent;
+  color: var(--color-gold-dark);
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid transparent;
+}
+
+.btn-text:hover {
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+/* ==========================================================================
+   Canvas Background & Animation
+   ========================================================================== */
+
+#hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* ==========================================================================
+   Interactive Cards (Shared)
+   ========================================================================== */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.interactive-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 2.25rem 1.75rem;
+  border-radius: var(--border-radius-md);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transition: var(--transition-smooth);
+  transform-origin: left;
+}
+
+.interactive-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--border-color-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.interactive-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   Monogram Seal
+   ========================================================================== */
+
+.monogram-seal {
+  font-family: var(--font-serif-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px double var(--color-gold);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  color: var(--color-gold);
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+
+.monogram-seal:hover {
+  background: var(--color-gold-glow);
+  transform: rotate(360deg);
+}
