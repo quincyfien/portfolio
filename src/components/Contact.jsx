@@ -24,10 +24,10 @@ export default function Contact({ cvPath }) {
     setStatus('submitting');
 
     try {
-      const response = await fetch(socialLinks.formEndpoint, {
+      const response = await fetch('/.netlify/functions/contact', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       });
 
       if (response.ok) {
