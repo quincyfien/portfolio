@@ -38,19 +38,6 @@
   color: var(--text-primary);
 }
 
-.nav-role-badge {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-gold-dark);
-  background: var(--color-gold-glow);
-  border: 1px solid var(--border-color);
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--border-radius-sm);
-  white-space: nowrap;
-}
-
 .nav-menu {
   display: flex;
   align-items: center;

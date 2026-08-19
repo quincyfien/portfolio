@@ -4,8 +4,8 @@ import { GithubIcon } from './SocialIcons';
 import { projects } from '../data/projects';
 import './Projects.css';
 
-export default function Projects({ defaultFilter = 'All' }) {
-  const [filter, setFilter] = useState(defaultFilter);
+export default function Projects() {
+  const [filter, setFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
 
   const filters = ['All', 'Featured', 'Cybersecurity', 'Web Development', 'Systems'];

@@ -3,7 +3,7 @@ import { Sun, Moon, Menu, X } from 'lucide-react';
 import { profile } from '../data/profile';
 import './Navbar.css';
 
-const ALL_NAV_LINKS = [
+const NAV_LINKS = [
   { name: 'Home', id: 'home' },
   { name: 'About', id: 'about' },
   { name: 'Skills', id: 'skills' },
@@ -14,7 +14,7 @@ const ALL_NAV_LINKS = [
   { name: 'Contact', id: 'contact' },
 ];
 
-export default function Navbar({ currentSection, onNavigate, roleConfig, visibleSections }) {
+export default function Navbar({ currentSection, onNavigate }) {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -26,10 +26,6 @@ export default function Navbar({ currentSection, onNavigate, roleConfig, visible
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
-
-  const navLinks = ALL_NAV_LINKS.filter((link) =>
-    visibleSections.includes(link.id),
-  );
 
   const handleLinkClick = (id) => {
     setMobileMenuOpen(false);
@@ -51,15 +47,11 @@ export default function Navbar({ currentSection, onNavigate, roleConfig, visible
             {profile.avatarSymbol}
           </div>
           <span className="nav-logo-text">{profile.name}</span>
-
-          {roleConfig && (
-            <span className="nav-role-badge">{roleConfig.label}</span>
-          )}
         </a>
 
         <nav role="navigation" aria-label="Main navigation">
           <ul className={`nav-menu ${mobileMenuOpen ? 'open' : ''}`}>
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <li key={link.id}>
                 <a
                   href={`#${link.id}`}

@@ -1,24 +1,25 @@
 import React, { useState, useMemo } from 'react';
-import { skills, skillCategories } from '../data/skills';
+import { skills } from '../data/skills';
 import './Skills.css';
 
-export default function Skills({ defaultActiveTab = 'cybersecurity' }) {
-  const [activeTab, setActiveTab] = useState(defaultActiveTab);
+export default function Skills() {
+  const [activeTab, setActiveTab] = useState('development');
 
   const categories = [
-    { key: 'cybersecurity', label: 'Cybersecurity & Systems' },
-    { key: 'development', label: 'Software Development' },
-    { key: 'business', label: 'Communication & Business' },
+    { key: 'development', label: 'Full-Stack Development' },
+    { key: 'security', label: 'Cloud & Security' },
   ];
 
   const groupedSkills = useMemo(() => {
-    const items = skills[activeTab].items;
-    return skillCategories.map((cat) => ({
-      key: cat.key,
-      label: cat.key,
-      description: cat.description,
-      items: items.filter((s) => s.category === cat.key),
-    })).filter((g) => g.items.length > 0);
+    const group = skills[activeTab];
+    return group.categories
+      .map((cat) => ({
+        key: cat.key,
+        label: cat.key,
+        description: cat.description,
+        items: group.items.filter((s) => s.category === cat.key),
+      }))
+      .filter((g) => g.items.length > 0);
   }, [activeTab]);
 
   return (
@@ -51,6 +52,8 @@ export default function Skills({ defaultActiveTab = 'cybersecurity' }) {
           role="tabpanel"
           aria-labelledby={`tab-${activeTab}`}
         >
+          <div className="skills-level-badge">{skills[activeTab].level}</div>
+
           {groupedSkills.map((group) => (
             <div key={group.key} className="skills-category-group">
               <div className="skills-category-heading">

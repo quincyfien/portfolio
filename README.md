@@ -1,6 +1,8 @@
 # Portfolio — NDICHIA QUINCY FIEN
 
-Professional portfolio showcasing projects in cybersecurity, software development, and technical writing. Built entirely from scratch with no UI framework dependencies.
+Full-Stack Developer → Cloud Security Engineer. Built entirely from scratch with no UI framework dependencies.
+
+**Positioning:** I write the technical documentation before I write the code, build full-stack web applications, and secure every layer as I go — because the best way to protect a system is to know exactly how it was built.
 
 **Live sections:** Hero with particle animation · About · Skills (ARIA tabbed) · Services · Projects (filterable, modal detail views) · Professional Journey (timeline) · Technical Blog (custom markdown parser) · Contact form
 
@@ -54,6 +56,15 @@ src/
 ├── data/                 # Content data (profile, skills, projects, etc.)
 ├── content/blog/         # Blog posts in Markdown
 └── utils/markdown.jsx    # Custom markdown parser & JSX renderer
+```
+
+## Deployment
+
+```bash
+# The contact form runs as a Netlify serverless function
+# Requires two environment variables in Netlify:
+#   MY_EMAIL             -> your Gmail address
+#   GMAIL_APP_PASSWORD   -> a Gmail app password (16 chars)
 ```
 
 ## Features

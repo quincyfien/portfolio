@@ -41,6 +41,20 @@
 
 /* Category groups */
 
+.skills-level-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-dark);
+  background: var(--color-gold-glow);
+  border: 1px solid var(--border-color);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 1.75rem;
+}
+
 .skills-category-group {
   margin-bottom: 2.25rem;
 }

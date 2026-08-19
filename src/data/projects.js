@@ -21,6 +21,49 @@ export const projects = [
     featured: true
   },
   {
+    id: "effica",
+    title: "Effica — Enterprise Printing Press Management Platform",
+    description: "Full-stack multi-branch printing press SaaS with Mobile Money payments, production workflow automation, and enterprise-grade security.",
+    longDescription: "A comprehensive Django/PostgreSQL/Redis platform digitizing the entire lifecycle of a multi-branch printing business — from customer ordering and Tranzak Mobile Money payment processing to production QA state machine, inventory management with optimistic locking, cross-branch financial dashboards, and a 3-portal isolated architecture for customers, staff, and superusers. Features a custom WAF, hash-chained tamper-proof audit system, hybrid RBAC + ABAC access control, passwordless JWT Ghost authentication, and a CI/CD pipeline with 131 automated tests at 80% coverage.",
+    technologies: ["Django", "PostgreSQL", "Redis", "Celery", "Nginx", "Docker", "Python", "JWT", "Tranzak API", "Google OAuth", "Prometheus"],
+    features: [
+      "Three-portal architecture (customer, staff, admin) with middleware-level access gating.",
+      "Passwordless JWT Ghost authentication with bcrypt-hashed OTPs, CAPTCHA fallback, and rate limiting.",
+      "Hybrid RBAC + ABAC access control with contextual policies (discount approvals, machine scheduling).",
+      "Tranzak Mobile Money integration with HMAC-SHA256 webhook verification and idempotency keys.",
+      "Hash-chained tamper-proof audit logging — each record cryptographically linked to the previous one.",
+      "Custom WAF middleware detecting SQL injection, XSS, malicious bots, and Slowloris DoS at the request layer.",
+      "Production workflow state machine (Draft → QA Review → Ready for Delivery) enforced by django-fsm.",
+      "CI/CD pipeline with Bandit SAST, 131 automated tests, and an 80% code coverage quality gate."
+    ],
+    challengesSolved: "Multi-branch data isolation was the hardest problem — enforcing strict query-level separation between print shop branches while allowing controlled cross-branch access for finance officers required a layered middleware and permission architecture. Mobile Money payment integrity was equally critical: implementing HMAC-SHA256 webhook verification, UUID-based idempotency keys, and a 3-state payment FSM to prevent double-charging and replay attacks. The 575+ printing service subtypes demanded a normalized catalog schema that could evolve without breaking existing orders.",
+    lessonsLearned: "Security must be architected from day one — the WAF, RBAC, ABAC, audit logging, and encryption layers were all designed into the initial architecture rather than retrofitted. File upload security in a printing platform is fundamentally different from generic web apps: customer PDFs and design files need content-based malware scanning, magic-byte validation, and sandboxed processing — extension blocking alone is insufficient. CI/CD requires layered scanning: SAST for code vulnerabilities plus SCA for dependency vulnerabilities; one without the other leaves blind spots.",
+    githubLink: "",
+    demoLink: "",
+    tags: ["Full-Stack", "Web Development", "Systems"],
+    featured: true
+  },
+  {
+    id: "securebank-simulation",
+    title: "SecureBank Incident Simulation",
+    description: "A Red Team/Blue Team project involving exploitation and defense of an Ubuntu-based banking portal and Windows environments, configuring Suricata IDS.",
+    longDescription: "This capstone project simulates real-world corporate intrusion. On the offensive (Red) side, I conducted web exploitation and privilege escalation. On the defensive (Blue) side, I hardened OS security, created firewall rules, deployed Suricata IDS, and constructed an incident response pipeline with detailed log reviews.",
+    technologies: ["Linux", "Suricata IDS", "Networking", "Penetration Testing", "Incident Response", "Nmap", "Wireshark", "Bash"],
+    features: [
+      "Vulnerability assessment and automated scanning using Nmap and OpenVAS.",
+      "Exploitation of SQL Injection and Remote Code Execution vectors on a banking portal.",
+      "Suricata IDS setup with customized rules to detect malicious web traffic.",
+      "Incident logging, traffic analysis in Wireshark, and post-incident reporting.",
+      "Hardening of Ubuntu systems using fail2ban, iptables, and disabled unused ports."
+    ],
+    challengesSolved: "Differentiating between legitimate high traffic and slow, low-intensity scan patterns in Suricata was difficult. I researched and engineered precise threshold rules that reduced false alarms by 85% while catching stealthy Nmap scans.",
+    lessonsLearned: "Obtained deep practical understanding of packet inspection, firewall management, system logs, and security monitoring workflows essential for Security Operations Centers (SOC).",
+    githubLink: "https://github.com/ndichia-quincy/securebank-simulation",
+    demoLink: "https://securebank-simulation.example.com",
+    tags: ["Cybersecurity", "Incident Response", "Networking"],
+    featured: true
+  },
+  {
     id: "malware-classification",
     title: "Malware Classification System",
     description: "A machine learning project using Support Vector Machines and Neural Networks to automate malware detection based on static features.",
@@ -59,48 +102,5 @@ export const projects = [
     demoLink: "https://kv-store-demo.example.com",
     tags: ["Systems", "Distributed Systems", "Networking"],
     featured: false
-  },
-  {
-    id: "securebank-simulation",
-    title: "SecureBank Incident Simulation",
-    description: "A Red Team/Blue Team project involving exploitation and defense of an Ubuntu-based banking portal and Windows environments, configuring Suricata IDS.",
-    longDescription: "This capstone project simulates real-world corporate intrusion. On the offensive (Red) side, I conducted web exploitation and privilege escalation. On the defensive (Blue) side, I hardened OS security, created firewall rules, deployed Suricata IDS, and constructed an incident response pipeline with detailed log reviews.",
-    technologies: ["Linux", "Suricata IDS", "Networking", "Penetration Testing", "Incident Response", "Nmap", "Wireshark", "Bash"],
-    features: [
-      "Vulnerability assessment and automated scanning using Nmap and OpenVAS.",
-      "Exploitation of SQL Injection and Remote Code Execution vectors on a banking portal.",
-      "Suricata IDS setup with customized rules to detect malicious web traffic.",
-      "Incident logging, traffic analysis in Wireshark, and post-incident reporting.",
-      "Hardening of Ubuntu systems using fail2ban, iptables, and disabled unused ports."
-    ],
-    challengesSolved: "Differentiating between legitimate high traffic and slow, low-intensity scan patterns in Suricata was difficult. I researched and engineered precise threshold rules that reduced false alarms by 85% while catching stealthy Nmap scans.",
-    lessonsLearned: "Obtained deep practical understanding of packet inspection, firewall management, system logs, and security monitoring workflows essential for Security Operations Centers (SOC).",
-    githubLink: "https://github.com/ndichia-quincy/securebank-simulation",
-    demoLink: "https://securebank-simulation.example.com",
-    tags: ["Cybersecurity", "Incident Response", "Networking"],
-    featured: true
-  },
-  {
-    id: "effica",
-    title: "Effica — Enterprise Printing Press Management Platform",
-    description: "Full-stack multi-branch printing press SaaS with Mobile Money payments, production workflow automation, and enterprise-grade security.",
-    longDescription: "A comprehensive Django/PostgreSQL/Redis platform digitizing the entire lifecycle of a multi-branch printing business — from customer ordering and Tranzak Mobile Money payment processing to production QA state machine, inventory management with optimistic locking, cross-branch financial dashboards, and a 3-portal isolated architecture for customers, staff, and superusers. Features a custom WAF, hash-chained tamper-proof audit system, hybrid RBAC + ABAC access control, passwordless JWT Ghost authentication, and a CI/CD pipeline with 131 automated tests at 80% coverage.",
-    technologies: ["Django", "PostgreSQL", "Redis", "Celery", "Nginx", "Docker", "Python", "JWT", "Tranzak API", "Google OAuth", "Prometheus"],
-    features: [
-      "Three-portal architecture (customer, staff, admin) with middleware-level access gating.",
-      "Passwordless JWT Ghost authentication with bcrypt-hashed OTPs, CAPTCHA fallback, and rate limiting.",
-      "Hybrid RBAC + ABAC access control with contextual policies (discount approvals, machine scheduling).",
-      "Tranzak Mobile Money integration with HMAC-SHA256 webhook verification and idempotency keys.",
-      "Hash-chained tamper-proof audit logging — each record cryptographically linked to the previous one.",
-      "Custom WAF middleware detecting SQL injection, XSS, malicious bots, and Slowloris DoS at the request layer.",
-      "Production workflow state machine (Draft → QA Review → Ready for Delivery) enforced by django-fsm.",
-      "CI/CD pipeline with Bandit SAST, 131 automated tests, and an 80% code coverage quality gate."
-    ],
-    challengesSolved: "Multi-branch data isolation was the hardest problem — enforcing strict query-level separation between print shop branches while allowing controlled cross-branch access for finance officers required a layered middleware and permission architecture. Mobile Money payment integrity was equally critical: implementing HMAC-SHA256 webhook verification, UUID-based idempotency keys, and a 3-state payment FSM to prevent double-charging and replay attacks. The 575+ printing service subtypes demanded a normalized catalog schema that could evolve without breaking existing orders.",
-    lessonsLearned: "Security must be architected from day one — the WAF, RBAC, ABAC, audit logging, and encryption layers were all designed into the initial architecture rather than retrofitted. File upload security in a printing platform is fundamentally different from generic web apps: customer PDFs and design files need content-based malware scanning, magic-byte validation, and sandboxed processing — extension blocking alone is insufficient. CI/CD requires layered scanning: SAST for code vulnerabilities plus SCA for dependency vulnerabilities; one without the other leaves blind spots.",
-    githubLink: "",
-    demoLink: "",
-    tags: ["Full-Stack", "Web Development", "Systems"],
-    featured: true
   }
 ];

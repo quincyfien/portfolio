@@ -1,38 +1,26 @@
 export const services = [
   {
-    id: "technical-writing",
-    title: "Technical Writing",
-    icon: "FileText",
-    tagline: "Bridging the gap between complex tech and user clarity.",
-    details: [
-      "Cybersecurity articles & blogs written for tech audiences.",
-      "Comprehensive system, API, and workflow documentation.",
-      "Step-by-step developer tutorials and environment setups.",
-      "Deep-dive technical research assistance and literature summaries."
-    ]
-  },
-  {
-    id: "virtual-assistance",
-    title: "Virtual Assistance",
-    icon: "ShieldAlert", // we can use ClipboardList or similar from Lucide
-    tagline: "Streamlining operations, administration, and digital tasks.",
-    details: [
-      "Targeted research assistance and competitive intelligence.",
-      "Professional inbox, calendar, and email management.",
-      "Formatting, organization, and proofreading of documents.",
-      "Administrative support, data entry, and data clean-up tasks."
-    ]
-  },
-  {
     id: "web-development",
-    title: "Web Development",
+    title: "Full-Stack Web Development",
     icon: "Code",
-    tagline: "Designing and building secure, performant, elegant applications.",
+    tagline: "Designing and building secure, performant, elegant applications — documented before they're coded.",
     details: [
-      "Bespoke responsive portfolio and personal brand websites.",
-      "Professional business websites with modern design aesthetics.",
-      "Custom full-stack Django database-driven applications.",
-      "Website updates, migrations, optimization, and routine maintenance."
+      "End-to-end applications with React / Next.js frontends and Python (Django, FastAPI) or Node.js backends.",
+      "Relational and document databases — PostgreSQL and MongoDB — with thoughtful schema design.",
+      "TypeScript across the stack for maintainable, self-documenting code.",
+      "REST API design and integration, with security requirements written before implementation."
+    ]
+  },
+  {
+    id: "security-engineering",
+    title: "Security Engineering & Secure Development",
+    icon: "ShieldCheck",
+    tagline: "Baking security into every layer of the software lifecycle — not bolted on at the end.",
+    details: [
+      "Secure coding practices and code review with a focus on OWASP Top 10 mitigations.",
+      "Secure SDLC: threat modelling and security requirements before a line of code is written.",
+      "Identity & access management, network hardening, and defensive monitoring (Suricata IDS).",
+      "Cloud security fundamentals — securing infrastructure as I grow into a Cloud Security Engineer."
     ]
   }
 ];

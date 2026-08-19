@@ -117,7 +117,7 @@ export default function Hero({ onNavigate, cvPath }) {
         <div className="hero-content">
           <div className="hero-subtitle">
             <Shield size={14} />
-            <span>Secure Systems &amp; Documented Code</span>
+            <span>Write It, Build It, Secure It</span>
           </div>
 
           <h1 className="hero-title">{profile.name}</h1>

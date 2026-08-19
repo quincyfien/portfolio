@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,31 +9,15 @@ import Journey from './components/Journey';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import { getRoleConfig, ALL_SECTIONS } from './config/roles';
 
-const SECTIONS_MAP = {
-  home: Hero,
-  about: About,
-  skills: Skills,
-  services: Services,
-  projects: Projects,
-  journey: Journey,
-  blog: Blog,
-  contact: Contact,
-};
+const CV_PATH = '/assets/documents/CV_Ndichia_Quincy.docx';
 
 export default function App() {
-  const roleConfig = useMemo(() => getRoleConfig(), []);
-  const visibleSections = roleConfig ? roleConfig.sections : ALL_SECTIONS;
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    if (roleConfig) {
-      document.title = roleConfig.pageTitle;
-    }
-  }, [roleConfig]);
+    const sections = ['home', 'about', 'skills', 'services', 'projects', 'journey', 'blog', 'contact'];
 
-  useEffect(() => {
     const observerOptions = {
       root: null,
       rootMargin: '-20% 0px -60% 0px',
@@ -50,7 +34,7 @@ export default function App() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    visibleSections.forEach((id) => {
+    sections.forEach((id) => {
       const element = document.getElementById(id);
       if (element) {
         observer.observe(element);
@@ -60,7 +44,7 @@ export default function App() {
     return () => {
       observer.disconnect();
     };
-  }, [visibleSections]);
+  }, []);
 
   const handleNavigate = (id) => {
     setActiveSection(id);
@@ -78,50 +62,19 @@ export default function App() {
     }
   };
 
-  const cvPath = useMemo(
-    () => roleConfig?.cvPath || '/assets/documents/CV_Ndichia_Quincy_Cybersecurity.docx',
-    [roleConfig],
-  );
-
-  const sectionProps = useMemo(
-    () => ({
-      home: { cvPath },
-      skills: {
-        defaultActiveTab: roleConfig?.defaultSkillTab,
-      },
-      projects: {
-        defaultFilter: roleConfig?.defaultProjectFilter,
-      },
-      contact: { cvPath },
-    }),
-    [roleConfig, cvPath],
-  );
-
   return (
     <div className="app-container">
-      <Navbar
-        currentSection={activeSection}
-        onNavigate={handleNavigate}
-        roleConfig={roleConfig}
-        visibleSections={visibleSections}
-      />
+      <Navbar currentSection={activeSection} onNavigate={handleNavigate} />
 
       <main id="main-content" className="main-content" role="main">
-        {visibleSections.map((id) => {
-          const Component = SECTIONS_MAP[id];
-          if (!Component) return null;
-
-          const extraProps = { ...(sectionProps[id] || {}) };
-          if (id === 'home') {
-            extraProps.onNavigate = handleNavigate;
-          }
-
-          return (
-            <Fragment key={id}>
-              <Component {...extraProps} />
-            </Fragment>
-          );
-        })}
+        <Hero onNavigate={handleNavigate} cvPath={CV_PATH} />
+        <About />
+        <Skills />
+        <Services />
+        <Projects />
+        <Journey />
+        <Blog />
+        <Contact cvPath={CV_PATH} />
       </main>
 
       <Footer />
