@@ -10,7 +10,7 @@ import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
-const CV_PATH = '/assets/documents/CV_Ndichia_Quincy.docx';
+const CV_PATH = '/assets/documents/Ndichia_Quincy_CV.pdf';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
