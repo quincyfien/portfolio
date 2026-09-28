@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
-import { Shield, Eye, EyeOff, X, KeyRound, ArrowRight } from 'lucide-react';
+import { Shield, Eye, EyeOff, X, Mail, KeyRound, ArrowRight } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import './AdminModal.css';
 
 export default function AdminModal({ isOpen, onClose }) {
-  const { loginAdmin, isAuthenticated } = useData();
-  const [pin, setPin] = useState('');
-  const [showPin, setShowPin] = useState(false);
-  const [error, setError] = useState(false);
+  const { loginAdmin, isAuthenticated, isSupabaseConfigured } = useData();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen || isAuthenticated) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = loginAdmin(pin);
+    setError('');
+    setLoading(true);
+    const success = await loginAdmin(email, password);
+    setLoading(false);
     if (success) {
-      setPin('');
-      setError(false);
+      setEmail('');
+      setPassword('');
     } else {
-      setError(true);
+      setError('Invalid email or password.');
     }
   };
 
@@ -34,55 +39,70 @@ export default function AdminModal({ isOpen, onClose }) {
           <div className="admin-shield-icon">
             <Shield size={28} />
           </div>
-          <h2 id="admin-modal-title" className="admin-modal-title">Admin Dashboard Authorization</h2>
+          <h2 id="admin-modal-title" className="admin-modal-title">Admin Authorization</h2>
           <p className="admin-modal-subtitle">
-            Enter your security access PIN code to manage job title, journey, and technical documents.
+            Sign in to manage your portfolio content.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="admin-modal-form">
-          <div className="admin-input-group">
-            <label htmlFor="admin-pin-input" className="admin-input-label">
-              <KeyRound size={14} /> Security PIN Code
-            </label>
-            <div className="admin-input-wrapper">
+        {!isSupabaseConfigured ? (
+          <p className="admin-error-text" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable admin access.
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="admin-modal-form">
+            <div className="admin-input-group">
+              <label htmlFor="admin-email-input" className="admin-input-label">
+                <Mail size={14} /> Email
+              </label>
               <input
-                id="admin-pin-input"
-                type={showPin ? 'text' : 'password'}
-                value={pin}
-                onChange={(e) => {
-                  setPin(e.target.value);
-                  setError(false);
-                }}
-                placeholder="Enter PIN (Default: admin123)"
-                className={`admin-pin-input ${error ? 'input-error' : ''}`}
+                id="admin-email-input"
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                placeholder="you@example.com"
+                className="admin-pin-input"
                 autoFocus
+                autoComplete="email"
               />
-              <button
-                type="button"
-                className="pin-toggle-btn"
-                onClick={() => setShowPin(!showPin)}
-                tabIndex={-1}
-              >
-                {showPin ? <EyeOff size={16} /> : <Eye size={16} />}
+            </div>
+
+            <div className="admin-input-group">
+              <label htmlFor="admin-password-input" className="admin-input-label">
+                <KeyRound size={14} /> Password
+              </label>
+              <div className="admin-input-wrapper">
+                <input
+                  id="admin-password-input"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                  placeholder="••••••••••••"
+                  className={`admin-pin-input ${error ? 'input-error' : ''}`}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="pin-toggle-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              {error && <p className="admin-error-text">{error}</p>}
+            </div>
+
+            <div className="admin-modal-actions">
+              <button type="button" onClick={onClose} className="btn-admin-cancel">
+                Cancel
+              </button>
+              <button type="submit" className="btn-admin-login" disabled={loading}>
+                {loading ? 'Signing in…' : 'Authenticate'} <ArrowRight size={16} />
               </button>
             </div>
-            {error && <p className="admin-error-text">Invalid PIN code. Please try default: admin123</p>}
-          </div>
-
-          <div className="admin-modal-hint">
-            <span className="hint-pill">Default PIN: <strong>admin123</strong></span>
-          </div>
-
-          <div className="admin-modal-actions">
-            <button type="button" onClick={onClose} className="btn-admin-cancel">
-              Cancel
-            </button>
-            <button type="submit" className="btn-admin-login">
-              Authenticate Access <ArrowRight size={16} />
-            </button>
-          </div>
-        </form>
+          </form>
+        )}
       </div>
     </div>
   );

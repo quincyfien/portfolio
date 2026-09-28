@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ExternalLink, Info, X, ShieldAlert } from 'lucide-react';
+import { ExternalLink, X, ShieldAlert, ChevronRight } from 'lucide-react';
 import { GithubIcon } from './SocialIcons';
-import { projects } from '../data/projects';
+import { useData } from '../context/DataContext';
 import './Projects.css';
 
 export default function Projects() {
+  const { projects } = useData();
   const [filter, setFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -79,37 +80,39 @@ export default function Projects() {
             <div className="project-card-footer">
               <button 
                 onClick={() => setSelectedProject(project)}
-                className="btn-text"
-                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                className="read-more-btn"
                 aria-label={`Read more details about ${project.title}`}
               >
-                <Info size={14} />
-                Read More
+                Read More <ChevronRight size={14} />
               </button>
 
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <a 
-                  href={project.githubLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="contact-social-btn" 
-                  style={{ width: '32px', height: '32px' }}
-                  title="View Source Code"
-                  aria-label={`View code for ${project.title}`}
-                >
-                  <GithubIcon size={14} />
-                </a>
-                <a 
-                  href={project.demoLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="contact-social-btn" 
-                  style={{ width: '32px', height: '32px' }}
-                  title="View Live Demo"
-                  aria-label={`View live demo for ${project.title}`}
-                >
-                  <ExternalLink size={14} />
-                </a>
+                {project.githubLink && (
+                  <a 
+                    href={project.githubLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="contact-social-btn" 
+                    style={{ width: '32px', height: '32px' }}
+                    title="View Source Code"
+                    aria-label={`View code for ${project.title}`}
+                  >
+                    <GithubIcon size={14} />
+                  </a>
+                )}
+                {project.demoLink && (
+                  <a 
+                    href={project.demoLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="contact-social-btn" 
+                    style={{ width: '32px', height: '32px' }}
+                    title="View Live Demo"
+                    aria-label={`View live demo for ${project.title}`}
+                  >
+                    <ExternalLink size={14} />
+                  </a>
+                )}
               </div>
             </div>
           </article>
@@ -197,26 +200,30 @@ export default function Projects() {
               </div>
 
               <div className="project-modal-links">
-                <a 
-                  href={selectedProject.githubLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn btn-primary"
-                  aria-label="View Project Code on GitHub"
-                >
-                  <GithubIcon size={16} />
-                  View Code
-                </a>
-                <a 
-                  href={selectedProject.demoLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn btn-secondary"
-                  aria-label="Launch Live Demo"
-                >
-                  <ExternalLink size={16} />
-                  Live Demo
-                </a>
+                {selectedProject.githubLink && (
+                  <a 
+                    href={selectedProject.githubLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-primary"
+                    aria-label="View Project Code on GitHub"
+                  >
+                    <GithubIcon size={16} />
+                    View Code
+                  </a>
+                )}
+                {selectedProject.demoLink && (
+                  <a 
+                    href={selectedProject.demoLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-secondary"
+                    aria-label="Launch Live Demo"
+                  >
+                    <ExternalLink size={16} />
+                    Live Demo
+                  </a>
+                )}
               </div>
             </div>
           </div>

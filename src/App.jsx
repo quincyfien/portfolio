@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import HowIWork from './components/HowIWork';
 import Skills from './components/Skills';
 import Services from './components/Services';
 import Projects from './components/Projects';
 import Journey from './components/Journey';
+import Certifications from './components/Certifications';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -21,7 +23,7 @@ function PortfolioMain() {
   const { isAdminOpen, isAuthenticated, openAdminModal, closeAdminModal } = useData();
 
   useEffect(() => {
-    const sections = ['home', 'about', 'skills', 'services', 'projects', 'journey', 'blog', 'contact'];
+    const sections = ['home', 'about', 'how-i-work', 'skills', 'services', 'projects', 'journey', 'certifications', 'blog', 'contact'];
 
     const observerOptions = {
       root: null,
@@ -46,20 +48,21 @@ function PortfolioMain() {
       }
     });
 
-    // Keyboard shortcut for admin: Ctrl+Shift+A or Alt+A
-    const handleKeyDown = (e) => {
-      if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')) {
-        e.preventDefault();
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Hidden admin entry: visit /#admin to open the login modal
+  useEffect(() => {
+    const openAdminFromHash = () => {
+      if (window.location.hash === '#admin') {
         openAdminModal();
       }
     };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    openAdminFromHash();
+    window.addEventListener('hashchange', openAdminFromHash);
+    return () => window.removeEventListener('hashchange', openAdminFromHash);
   }, [openAdminModal]);
 
   const handleNavigate = (id) => {
@@ -85,10 +88,12 @@ function PortfolioMain() {
       <main id="main-content" className="main-content" role="main">
         <Hero onNavigate={handleNavigate} cvPath={CV_PATH} />
         <About />
+        <HowIWork />
         <Skills />
         <Services />
         <Projects />
         <Journey />
+        <Certifications />
         <Blog />
         <Contact cvPath={CV_PATH} />
       </main>

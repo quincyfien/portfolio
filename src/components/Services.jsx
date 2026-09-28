@@ -1,9 +1,11 @@
 import React from 'react';
 import * as Icons from 'lucide-react';
-import { services } from '../data/services';
+import { useData } from '../context/DataContext';
 import './Services.css';
 
 export default function Services() {
+  const { services } = useData();
+
   return (
     <section id="services" className="section" aria-labelledby="services-title">
       <div className="section-header">
@@ -13,18 +15,17 @@ export default function Services() {
 
       <div className="card-grid">
         {services.map((service) => {
-          // Dynamic Lucide Icon Resolution
           const IconComp = Icons[service.icon] || Icons.HelpCircle;
-          
+
           return (
             <div key={service.id} className="interactive-card service-card">
               <div className="service-icon-box">
-                <IconComp size={32} strokeWidth={1.5} />
+                <IconComp size={26} strokeWidth={1.5} />
               </div>
-              
+
               <h3 className="service-title">{service.title}</h3>
               <p className="service-tagline">{service.tagline}</p>
-              
+
               <ul className="service-list" aria-label={`Details for ${service.title}`}>
                 {service.details.map((detail, index) => (
                   <li key={index} className="service-list-item">

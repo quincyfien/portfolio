@@ -2,27 +2,21 @@
    About Section
    ========================================================================== */
 
-.about-columns {
+.about-top {
   display: grid;
-  grid-template-columns: 280px 1fr 1.5fr;
-  gap: 3rem;
+  grid-template-columns: 300px 1fr;
+  gap: 3.5rem;
   align-items: start;
 }
 
-@media (max-width: 1100px) {
-  .about-columns {
-    grid-template-columns: 220px 1fr;
+@media (max-width: 900px) {
+  .about-top {
+    grid-template-columns: 1fr;
     gap: 2.5rem;
   }
-  .about-academic-card {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 700px) {
-  .about-columns {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .about-image-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
   }
 }
 
@@ -87,16 +81,6 @@
   transform: scale(1.04);
 }
 
-.about-image-caption {
-  font-family: var(--font-serif-display);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-gold-dark);
-  text-align: center;
-}
-
-/* Badge below profile photo */
 .about-image-badge {
   width: 100%;
   display: flex;
@@ -141,14 +125,46 @@
   line-height: 1;
 }
 
+/* Intro text column */
+.about-intro-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.about-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.about-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.about-detail-chevron {
+  color: var(--color-gold);
+  margin-top: 0.28rem;
+  flex-shrink: 0;
+}
+
+.about-detail-text {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
 /* Quick stats row */
 .about-stats-row {
   display: flex;
   gap: 1rem;
-  padding: 1.25rem;
+  padding: 1.4rem;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
+  margin-top: 0.25rem;
 }
 
 .about-stat {
@@ -173,7 +189,7 @@
 
 .about-stat-number {
   font-family: var(--font-serif-display);
-  font-size: 1.75rem;
+  font-size: 1.9rem;
   font-weight: 700;
   color: var(--color-gold);
   line-height: 1;
@@ -187,49 +203,52 @@
   color: var(--text-muted);
 }
 
-.about-intro-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+/* Bottom: education + interests */
+.about-bottom {
+  margin-top: 3.5rem;
 }
 
-.about-academic-card {
-  padding: 2.5rem;
-  border-radius: var(--border-radius-md);
+.about-bottom-header {
+  margin-bottom: 1.75rem;
 }
 
 .academic-headline {
   font-family: var(--font-serif-display);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--color-gold-dark);
-  margin-bottom: 2rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.academic-timeline {
-  display: flex;
-  flex-direction: column;
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
-.academic-item {
-  position: relative;
-  padding-left: 1.5rem;
-  border-left: 2px solid var(--color-gold);
+.education-card {
+  padding: 1.75rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
 }
 
 .academic-degree {
   font-family: var(--font-serif-display);
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
 }
 
 .academic-school {
   font-size: 0.85rem;
   color: var(--text-muted);
+  margin-bottom: 0.75rem;
 }
 
 .academic-badge {
@@ -238,7 +257,55 @@
   font-size: 0.7rem;
   color: var(--color-gold-dark);
   background: var(--color-gold-glow);
-  padding: 0.1rem 0.5rem;
+  padding: 0.15rem 0.55rem;
   border-radius: var(--border-radius-sm);
-  margin-top: 0.35rem;
+}
+
+/* Interests block */
+.interests-block {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.interests-commitment {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex: 1 1 320px;
+}
+
+.interests-title {
+  font-family: var(--font-serif-display);
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+}
+
+.interests-text {
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.interests-tags {
+  flex: 1 1 240px;
+}
+
+.interests-label {
+  font-family: var(--font-serif-display);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gold-dark);
+  margin-bottom: 0.75rem;
+}
+
+.interests-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }

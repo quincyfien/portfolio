@@ -1,0 +1,92 @@
+/* ==========================================================================
+   How I Work (Pillars) Section
+   ========================================================================== */
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.pillar-card {
+  position: relative;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pillar-number {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-family: var(--font-serif-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-gold-glow);
+  line-height: 1;
+  user-select: none;
+}
+
+.pillar-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 2px double var(--color-gold);
+  border-radius: 50%;
+  color: var(--color-gold);
+  margin-bottom: 1.25rem;
+  transition: var(--transition-smooth);
+}
+
+.pillar-card:hover .pillar-icon-box {
+  background: var(--color-gold-glow);
+  transform: rotate(8deg);
+}
+
+.pillar-title {
+  font-family: var(--font-serif-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.pillar-desc {
+  font-family: var(--font-serif-body);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.55;
+}
+
+.pillar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pillar-item {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 1.4rem;
+  line-height: 1.5;
+}
+
+.pillar-item::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  color: var(--color-gold);
+  font-size: 0.7rem;
+  top: 0.1rem;
+}

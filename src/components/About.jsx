@@ -1,9 +1,11 @@
 import React from 'react';
-import { ChevronRight, MapPin, Shield } from 'lucide-react';
+import { ChevronRight, MapPin, Shield, GraduationCap } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { socialLinks } from '../data/socialLinks';
 import profileImg from '../assets/images/profile-placeholder.png';
 import './About.css';
+
+const INTERESTS = ['Cybersecurity', 'Cloud Tech', 'Linux Systems', 'Software Engineering', 'Technical Writing'];
 
 export default function About() {
   const { profile } = useData();
@@ -15,9 +17,8 @@ export default function About() {
         <h2 id="about-title" className="section-title">About Me</h2>
       </div>
 
-      <div className="about-columns">
-
-        {/* ── Column 1: Profile Portrait ── */}
+      {/* ── Top: portrait + intro ── */}
+      <div className="about-top">
         <div className="about-image-wrapper">
           <div className="about-image-frame">
             <img
@@ -27,7 +28,6 @@ export default function About() {
             />
           </div>
 
-          {/* Name + Location badge below photo */}
           <div className="about-image-badge glass-panel">
             <span className="about-image-badge-name">{profile.avatarSymbol}</span>
             <div>
@@ -40,32 +40,24 @@ export default function About() {
           </div>
         </div>
 
-        {/* ── Column 2: Bio & Details ── */}
         <div className="about-intro-text">
           <div className="aristocratic-border">
-            <div style={{ padding: '1.25rem 1rem' }}>
+            <div style={{ padding: '1.4rem 1.25rem' }}>
               <p className="serif-body-text" style={{ marginBottom: 0 }}>
                 {profile.summary}
               </p>
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          <div className="about-details-list">
             {(profile.aboutDetails || []).map((detail, index) => (
-              <div
-                key={index}
-                style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}
-              >
-                <ChevronRight
-                  size={16}
-                  style={{ color: 'var(--color-gold)', marginTop: '0.25rem', flexShrink: 0 }}
-                />
-                <p style={{ margin: 0, lineHeight: '1.6', fontSize: '0.95rem' }}>{detail}</p>
+              <div key={index} className="about-detail-item">
+                <ChevronRight size={16} className="about-detail-chevron" />
+                <p className="about-detail-text">{detail}</p>
               </div>
             ))}
           </div>
 
-          {/* Quick stats row */}
           <div className="about-stats-row">
             <div className="about-stat">
               <span className="about-stat-number">5+</span>
@@ -76,75 +68,50 @@ export default function About() {
               <span className="about-stat-label">Degrees</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat-number">3+</span>
+              <span className="about-stat-number">4</span>
               <span className="about-stat-label">Service Areas</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* ── Column 3: Academic Card ── */}
-        <div className="about-academic-card glass-panel">
-          <h3 className="academic-headline">Academic Profile</h3>
+      {/* ── Bottom: education + interests ── */}
+      <div className="about-bottom">
+        <div className="about-bottom-header">
+          <h3 className="academic-headline">
+            <GraduationCap size={18} /> Academic Profile
+          </h3>
+        </div>
 
-          <div className="academic-timeline">
-            {(profile.education || []).map((edu, index) => (
-              <div key={index} className="academic-item">
-                <h4 className="academic-degree">{edu.degree}</h4>
-                <p className="academic-school">{edu.institution}</p>
-                <span className="academic-badge">{edu.status}</span>
-              </div>
-            ))}
-          </div>
+        <div className="education-grid">
+          {(profile.education || []).map((edu, index) => (
+            <div key={index} className="education-card glass-panel">
+              <h4 className="academic-degree">{edu.degree}</h4>
+              <p className="academic-school">{edu.institution}</p>
+              <span className="academic-badge">{edu.status}</span>
+            </div>
+          ))}
+        </div>
 
-          {/* Separator */}
-          <div style={{ margin: '2rem 0', borderTop: '1px dashed var(--border-color)' }} />
-
-          {/* Commitment block */}
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-            <div
-              className="monogram-seal"
-              style={{ width: '40px', height: '40px', fontSize: '1rem', flexShrink: 0 }}
-              aria-hidden="true"
-            >
+        <div className="interests-block">
+          <div className="interests-commitment">
+            <div className="monogram-seal" style={{ width: '40px', height: '40px', fontSize: '1rem', flexShrink: 0 }} aria-hidden="true">
               <Shield size={16} />
             </div>
             <div>
-              <h4
-                style={{
-                  fontFamily: 'var(--font-serif-display)',
-                  fontSize: '0.95rem',
-                  marginBottom: '0.35rem',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                Commitment to Growth
-              </h4>
-              <p style={{ fontSize: '0.85rem', margin: 0, lineHeight: '1.6' }}>
+              <h4 className="interests-title">Commitment to Growth</h4>
+              <p className="interests-text">
                 Applying scientific rigor and analytical discipline from Physics to
-                build and defend secure digital systems.
+                design, document, and defend secure digital systems.
               </p>
             </div>
           </div>
 
-          {/* Interests chips */}
-          <div style={{ marginTop: '2rem' }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-serif-display)',
-                fontSize: '0.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: 'var(--color-gold-dark)',
-                marginBottom: '0.75rem',
-              }}
-            >
-              Areas of Interest
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-              {['Cybersecurity', 'Cloud Tech', 'Linux Systems', 'Software Engineering', 'Technical Writing'].map((area) => (
-                <span key={area} className="academic-badge" style={{ fontSize: '0.72rem' }}>
-                  {area}
-                </span>
+          <div className="interests-tags">
+            <p className="interests-label">Areas of Interest</p>
+            <div className="interests-chips">
+              {INTERESTS.map((area) => (
+                <span key={area} className="academic-badge">{area}</span>
               ))}
             </div>
           </div>

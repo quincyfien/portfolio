@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X, Shield } from 'lucide-react';
+import { Sun, Moon, Menu, X } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import './Navbar.css';
 
 const NAV_LINKS = [
   { name: 'Home', id: 'home' },
   { name: 'About', id: 'about' },
+  { name: 'How I Work', id: 'how-i-work' },
   { name: 'Skills', id: 'skills' },
   { name: 'Services', id: 'services' },
   { name: 'Projects', id: 'projects' },
   { name: 'Journey', id: 'journey' },
+  { name: 'Certifications', id: 'certifications' },
   { name: 'Docs', id: 'blog' },
   { name: 'Contact', id: 'contact' },
 ];
 
 export default function Navbar({ currentSection, onNavigate }) {
-  const { profile, openAdminModal } = useData();
+  const { profile } = useData();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -72,16 +74,6 @@ export default function Navbar({ currentSection, onNavigate }) {
         </nav>
 
         <div className="nav-actions">
-          <button
-            onClick={openAdminModal}
-            className="theme-toggle-btn"
-            aria-label="Open Admin Dashboard"
-            title="Open Admin Dashboard Studio"
-            style={{ color: 'var(--color-gold)' }}
-          >
-            <Shield size={18} />
-          </button>
-
           <button
             onClick={toggleTheme}
             className="theme-toggle-btn"
