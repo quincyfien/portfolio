@@ -9,11 +9,16 @@ import Journey from './components/Journey';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import AdminModal from './components/Admin/AdminModal';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import Toast from './components/Admin/Toast';
+import { DataProvider, useData } from './context/DataContext';
 
 const CV_PATH = '/assets/documents/Ndichia_Quincy_CV.pdf';
 
-export default function App() {
+function PortfolioMain() {
   const [activeSection, setActiveSection] = useState('home');
+  const { isAdminOpen, isAuthenticated, openAdminModal, closeAdminModal } = useData();
 
   useEffect(() => {
     const sections = ['home', 'about', 'skills', 'services', 'projects', 'journey', 'blog', 'contact'];
@@ -41,10 +46,21 @@ export default function App() {
       }
     });
 
+    // Keyboard shortcut for admin: Ctrl+Shift+A or Alt+A
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')) {
+        e.preventDefault();
+        openAdminModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       observer.disconnect();
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [openAdminModal]);
 
   const handleNavigate = (id) => {
     setActiveSection(id);
@@ -78,6 +94,25 @@ export default function App() {
       </main>
 
       <Footer />
+
+      {/* Admin Authentication Screen Modal */}
+      <AdminModal isOpen={isAdminOpen && !isAuthenticated} onClose={closeAdminModal} />
+
+      {/* Full Admin Studio Dashboard */}
+      {isAdminOpen && isAuthenticated && (
+        <AdminDashboard onClose={closeAdminModal} />
+      )}
+
+      {/* Global Toast Notifications */}
+      <Toast />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <DataProvider>
+      <PortfolioMain />
+    </DataProvider>
   );
 }

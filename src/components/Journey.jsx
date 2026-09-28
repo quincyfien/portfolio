@@ -1,8 +1,10 @@
 import React from 'react';
-import { journey } from '../data/journey';
+import { useData } from '../context/DataContext';
 import './Journey.css';
 
 export default function Journey() {
+  const { journey } = useData();
+
   return (
     <section id="journey" className="section" aria-labelledby="journey-title">
       <div className="section-header">
@@ -12,7 +14,7 @@ export default function Journey() {
 
       <div className="timeline-container">
         {journey.map((item, index) => (
-          <div key={index} className="timeline-item">
+          <div key={item.id || index} className="timeline-item">
             <div className="timeline-dot" aria-hidden="true"></div>
             
             <div className="timeline-content-wrapper">

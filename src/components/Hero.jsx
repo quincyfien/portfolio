@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Shield, FileText, ArrowRight, Briefcase } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
-import { profile } from '../data/profile';
+import { useData } from '../context/DataContext';
 import { socialLinks } from '../data/socialLinks';
 import profileImg from '../assets/images/profile-placeholder.png';
 import './Hero.css';
 
 export default function Hero({ onNavigate, cvPath }) {
+  const { profile } = useData();
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -117,7 +118,7 @@ export default function Hero({ onNavigate, cvPath }) {
         <div className="hero-content">
           <div className="hero-subtitle">
             <Shield size={14} />
-            <span>Write It, Build It, Secure It</span>
+            <span>{profile.title || 'Write It, Build It, Secure It'}</span>
           </div>
 
           <h1 className="hero-title">{profile.name}</h1>
@@ -173,7 +174,7 @@ export default function Hero({ onNavigate, cvPath }) {
             {/* Gold ribbon */}
             <div className="hero-portrait-ribbon" aria-hidden="true">
               <span className="hero-portrait-ribbon-monogram">{profile.avatarSymbol}</span>
-              <span className="hero-portrait-ribbon-text">Cybersecurity · Developer · Writer</span>
+              <span className="hero-portrait-ribbon-text">{profile.title}</span>
             </div>
           </div>
         </div>

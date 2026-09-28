@@ -1,11 +1,13 @@
 import React from 'react';
 import { ChevronRight, MapPin, Shield } from 'lucide-react';
-import { profile } from '../data/profile';
+import { useData } from '../context/DataContext';
 import { socialLinks } from '../data/socialLinks';
 import profileImg from '../assets/images/profile-placeholder.png';
 import './About.css';
 
 export default function About() {
+  const { profile } = useData();
+
   return (
     <section id="about" className="section" aria-labelledby="about-title">
       <div className="section-header">
@@ -49,7 +51,7 @@ export default function About() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-            {profile.aboutDetails.map((detail, index) => (
+            {(profile.aboutDetails || []).map((detail, index) => (
               <div
                 key={index}
                 style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}
@@ -70,7 +72,7 @@ export default function About() {
               <span className="about-stat-label">Projects Built</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat-number">2</span>
+              <span className="about-stat-number">{(profile.education || []).length}</span>
               <span className="about-stat-label">Degrees</span>
             </div>
             <div className="about-stat">
@@ -85,7 +87,7 @@ export default function About() {
           <h3 className="academic-headline">Academic Profile</h3>
 
           <div className="academic-timeline">
-            {profile.education.map((edu, index) => (
+            {(profile.education || []).map((edu, index) => (
               <div key={index} className="academic-item">
                 <h4 className="academic-degree">{edu.degree}</h4>
                 <p className="academic-school">{edu.institution}</p>
