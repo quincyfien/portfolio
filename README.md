@@ -49,6 +49,7 @@ The site is a static React app whose content lives in Supabase. Without Supabase
 |---|---|---|
 | `VITE_SUPABASE_URL` | `.env.local` (dev) + Netlify | Supabase project URL |
 | `VITE_SUPABASE_ANON_KEY` | `.env.local` (dev) + Netlify | Supabase anon/public key |
+| `VITE_ADMIN_PATH` | `.env.local` (dev) + Netlify | Hidden admin route (default `nq-admin-x7k3`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | seed script only | Bypasses RLS for seeding — never expose in the browser |
 
 See `.env.example`.
@@ -58,10 +59,10 @@ See `.env.example`.
 There is **no public admin button**. Log in by visiting:
 
 ```
-https://your-site.netlify.app/#admin
+https://your-site.netlify.app/#nq-admin-x7k3
 ```
 
-That opens the email/password sign-in. Only the admin user you created in Supabase can write; public visitors can only read.
+(The path is set by `VITE_ADMIN_PATH`; default `nq-admin-x7k3`. Set your own secret value in Netlify and `.env.local`.) That opens the email/password sign-in. Only the admin user you created in Supabase can write; public visitors can only read.
 
 ## Deployment (Netlify)
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { profile as initialProfile } from '../data/profile';
 import { journey as initialJourney } from '../data/journey';
@@ -132,6 +132,16 @@ function withIds(list, prefix) {
   return list.map((item, idx) => ({ ...item, id: item.id || `${prefix}-${idx + 1}` }));
 }
 
+// Generate a UUID v4 (client-side) so local ids always match the DB's uuid column.
+function newUuid() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 // ---- row mappers (DB snake_case <-> app camelCase) --------------------------
 const profileToDb = (p) => ({
   id: 1,
@@ -231,6 +241,17 @@ export const DataProvider = ({ children }) => {
   const [hydrated, setHydrated] = useState(!isSupabaseConfigured);
   const [toast, setToast] = useState(null);
 
+  // Capture initial list lengths once, so hydration can guard against shrinking
+  // the local content (without re-running the effect on every change).
+  const initialLen = useRef({
+    journey: journey.length,
+    technicalDocs: technicalDocs.length,
+    projects: projects.length,
+    services: services.length,
+    certifications: certifications.length,
+    pillars: pillars.length,
+  }).current;
+
   // ---- localStorage sync (fallback persistence) ----
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
@@ -297,19 +318,19 @@ export const DataProvider = ({ children }) => {
             education: p.education || [], aboutDetails: p.about_details || [],
           });
         }
-        if (journeyRes.data?.length) {
+        if (journeyRes.data && journeyRes.data.length >= initialLen.journey) {
           setJourney(journeyRes.data.map((r) => ({
             id: r.id, year: r.year, title: r.title, subtitle: r.subtitle, description: r.description,
           })));
         }
-        if (docsRes.data?.length) {
+        if (docsRes.data && docsRes.data.length >= initialLen.technicalDocs) {
           setTechnicalDocs(docsRes.data.map((r) => ({
             id: r.id, title: r.title, slug: r.slug, category: r.category, tags: r.tags || [],
             date: r.date, readTime: r.read_time, summary: r.summary, content: r.content || '',
             status: r.status, fileUrl: r.file_url || '', fileName: r.file_name || '', fileType: r.file_type || '',
           })));
         }
-        if (projectsRes.data?.length) {
+        if (projectsRes.data && projectsRes.data.length >= initialLen.projects) {
           setProjects(projectsRes.data.map((r) => ({
             id: r.id, title: r.title, description: r.description, longDescription: r.long_description,
             technologies: r.technologies || [], features: r.features || [], challengesSolved: r.challenges_solved,
@@ -318,18 +339,18 @@ export const DataProvider = ({ children }) => {
           })));
         }
         if (skillsRes.data?.data) setSkills(skillsRes.data.data);
-        if (servicesRes.data?.length) {
+        if (servicesRes.data && servicesRes.data.length >= initialLen.services) {
           setServices(servicesRes.data.map((r) => ({
             id: r.id, title: r.title, icon: r.icon, tagline: r.tagline, details: r.details || [],
           })));
         }
-        if (certsRes.data?.length) {
+        if (certsRes.data && certsRes.data.length >= initialLen.certifications) {
           setCertifications(certsRes.data.map((r) => ({
             id: r.id, name: r.name, issuer: r.issuer, status: r.status, date: r.date || '',
             credentialId: r.credential_id || '', verifyUrl: r.verify_url || '',
           })));
         }
-        if (pillarsRes.data?.length) {
+        if (pillarsRes.data && pillarsRes.data.length >= initialLen.pillars) {
           setPillars(pillarsRes.data.map((r) => ({
             id: r.id, title: r.title, description: r.description, items: r.items || [],
           })));
@@ -340,6 +361,7 @@ export const DataProvider = ({ children }) => {
         setHydrated(true);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount; initialLen is stable
   }, []);
 
   // ---- toast ----
@@ -371,10 +393,11 @@ export const DataProvider = ({ children }) => {
     });
   };
   const addJourneyItem = (item) => {
-    const newItem = { ...item, id: `journey-${Date.now()}` };
+    const id = newUuid();
+    const newItem = { ...item, id };
     setJourney((prev) => [...prev, newItem]);
     if (supabase) {
-      supabase.from('journey').insert({ year: item.year, title: item.title, subtitle: item.subtitle, description: item.description, sort_order: journey.length }).then(({ error }) => {
+      supabase.from('journey').insert({ id, year: item.year, title: item.title, subtitle: item.subtitle, description: item.description, sort_order: journey.length }).then(({ error }) => {
         if (error) console.error('addJourneyItem', error);
       });
     }
@@ -407,7 +430,7 @@ export const DataProvider = ({ children }) => {
         .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
       const formattedDoc = {
         ...doc,
-        id: doc.id || `doc-${Date.now()}`,
+        id: doc.id || newUuid(),
         slug: slug || `doc-${Date.now()}`,
         tags: Array.isArray(doc.tags) ? doc.tags
           : typeof doc.tags === 'string' ? doc.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
@@ -424,7 +447,7 @@ export const DataProvider = ({ children }) => {
         if (existingIndex >= 0) {
           supabase.from('docs').update(dbPayload).eq('id', formattedDoc.id).then(({ error }) => { if (error) console.error(error); });
         } else {
-          supabase.from('docs').insert(dbPayload).then(({ error }) => { if (error) console.error(error); });
+          supabase.from('docs').insert({ id: formattedDoc.id, ...dbPayload }).then(({ error }) => { if (error) console.error(error); });
         }
       }
       return next;
@@ -447,22 +470,25 @@ export const DataProvider = ({ children }) => {
     });
   };
   const saveProject = (project) => {
+    const isNew = !project.id;
+    const id = isNew ? newUuid() : project.id;
+    const withId = { ...project, id };
     setProjects((prev) => {
-      const existing = prev.findIndex((p) => p.id === project.id);
+      const existing = prev.findIndex((p) => p.id === id);
       const next = existing >= 0
-        ? prev.map((p, i) => (i === existing ? project : p))
-        : [...prev, project];
+        ? prev.map((p, i) => (i === existing ? withId : p))
+        : [...prev, withId];
       if (supabase) {
-        const payload = { ...projectToDb(project), sort_order: existing >= 0 ? existing : prev.length };
+        const payload = { ...projectToDb(withId), sort_order: existing >= 0 ? existing : prev.length };
         if (existing >= 0) {
-          supabase.from('projects').update(payload).eq('id', project.id).then(({ error }) => { if (error) console.error(error); });
+          supabase.from('projects').update(payload).eq('id', id).then(({ error }) => { if (error) console.error(error); });
         } else {
-          supabase.from('projects').insert(payload).then(({ error }) => { if (error) console.error(error); });
+          supabase.from('projects').insert({ id, ...payload }).then(({ error }) => { if (error) console.error(error); });
         }
       }
       return next;
     });
-    showToast(project.id ? 'Project updated!' : 'Project added!');
+    showToast(isNew ? 'Project added!' : 'Project updated!');
   };
   const deleteProject = (id) => {
     setProjects((prev) => prev.filter((p) => p.id !== id));
@@ -489,17 +515,20 @@ export const DataProvider = ({ children }) => {
     });
   };
   const saveService = (service) => {
+    const isNew = !service.id;
+    const id = isNew ? newUuid() : service.id;
+    const withId = { ...service, id };
     setServices((prev) => {
-      const existing = prev.findIndex((s) => s.id === service.id);
-      const next = existing >= 0 ? prev.map((s, i) => (i === existing ? service : s)) : [...prev, service];
+      const existing = prev.findIndex((s) => s.id === id);
+      const next = existing >= 0 ? prev.map((s, i) => (i === existing ? withId : s)) : [...prev, withId];
       if (supabase) {
-        const payload = { ...serviceToDb(service), sort_order: existing >= 0 ? existing : prev.length };
-        if (existing >= 0) supabase.from('services').update(payload).eq('id', service.id).then(({ error }) => { if (error) console.error(error); });
-        else supabase.from('services').insert(payload).then(({ error }) => { if (error) console.error(error); });
+        const payload = { ...serviceToDb(withId), sort_order: existing >= 0 ? existing : prev.length };
+        if (existing >= 0) supabase.from('services').update(payload).eq('id', id).then(({ error }) => { if (error) console.error(error); });
+        else supabase.from('services').insert({ id, ...payload }).then(({ error }) => { if (error) console.error(error); });
       }
       return next;
     });
-    showToast(service.id ? 'Service updated!' : 'Service added!');
+    showToast(isNew ? 'Service added!' : 'Service updated!');
   };
   const deleteService = (id) => {
     setServices((prev) => prev.filter((s) => s.id !== id));
@@ -519,17 +548,20 @@ export const DataProvider = ({ children }) => {
     });
   };
   const saveCertification = (cert) => {
+    const isNew = !cert.id;
+    const id = isNew ? newUuid() : cert.id;
+    const withId = { ...cert, id };
     setCertifications((prev) => {
-      const existing = prev.findIndex((c) => c.id === cert.id);
-      const next = existing >= 0 ? prev.map((c, i) => (i === existing ? cert : c)) : [...prev, cert];
+      const existing = prev.findIndex((c) => c.id === id);
+      const next = existing >= 0 ? prev.map((c, i) => (i === existing ? withId : c)) : [...prev, withId];
       if (supabase) {
-        const payload = { ...certificationToDb(cert), sort_order: existing >= 0 ? existing : prev.length };
-        if (existing >= 0) supabase.from('certifications').update(payload).eq('id', cert.id).then(({ error }) => { if (error) console.error(error); });
-        else supabase.from('certifications').insert(payload).then(({ error }) => { if (error) console.error(error); });
+        const payload = { ...certificationToDb(withId), sort_order: existing >= 0 ? existing : prev.length };
+        if (existing >= 0) supabase.from('certifications').update(payload).eq('id', id).then(({ error }) => { if (error) console.error(error); });
+        else supabase.from('certifications').insert({ id, ...payload }).then(({ error }) => { if (error) console.error(error); });
       }
       return next;
     });
-    showToast(cert.id ? 'Certification updated!' : 'Certification added!');
+    showToast(isNew ? 'Certification added!' : 'Certification updated!');
   };
   const deleteCertification = (id) => {
     setCertifications((prev) => prev.filter((c) => c.id !== id));
@@ -549,17 +581,20 @@ export const DataProvider = ({ children }) => {
     });
   };
   const savePillar = (pillar) => {
+    const isNew = !pillar.id;
+    const id = isNew ? newUuid() : pillar.id;
+    const withId = { ...pillar, id };
     setPillars((prev) => {
-      const existing = prev.findIndex((p) => p.id === pillar.id);
-      const next = existing >= 0 ? prev.map((p, i) => (i === existing ? pillar : p)) : [...prev, pillar];
+      const existing = prev.findIndex((p) => p.id === id);
+      const next = existing >= 0 ? prev.map((p, i) => (i === existing ? withId : p)) : [...prev, withId];
       if (supabase) {
-        const payload = { ...pillarToDb(pillar), sort_order: existing >= 0 ? existing : prev.length };
-        if (existing >= 0) supabase.from('pillars').update(payload).eq('id', pillar.id).then(({ error }) => { if (error) console.error(error); });
-        else supabase.from('pillars').insert(payload).then(({ error }) => { if (error) console.error(error); });
+        const payload = { ...pillarToDb(withId), sort_order: existing >= 0 ? existing : prev.length };
+        if (existing >= 0) supabase.from('pillars').update(payload).eq('id', id).then(({ error }) => { if (error) console.error(error); });
+        else supabase.from('pillars').insert({ id, ...payload }).then(({ error }) => { if (error) console.error(error); });
       }
       return next;
     });
-    showToast(pillar.id ? 'Pillar updated!' : 'Pillar added!');
+    showToast(isNew ? 'Pillar added!' : 'Pillar updated!');
   };
   const deletePillar = (id) => {
     setPillars((prev) => prev.filter((p) => p.id !== id));
@@ -618,6 +653,56 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  // ---- Auto-sync: seed empty Supabase tables from bundled defaults ----
+  const syncLocalToSupabase = async () => {
+    if (!supabase) return;
+    try {
+      const [profileRes, journeyRes, docsRes, projectsRes, skillsRes, servicesRes, certsRes, pillarsRes] =
+        await Promise.all([
+          supabase.from('profile').select('id').maybeSingle(),
+          supabase.from('journey').select('id').limit(1),
+          supabase.from('docs').select('id').limit(1),
+          supabase.from('projects').select('id').limit(1),
+          supabase.from('skills').select('id').maybeSingle(),
+          supabase.from('services').select('id').limit(1),
+          supabase.from('certifications').select('id').limit(1),
+          supabase.from('pillars').select('id').limit(1),
+        ]);
+
+      if (!profileRes.data) await supabase.from('profile').upsert(profileToDb(initialProfile));
+      if (!journeyRes.data?.length) {
+        const rows = initialJourney.map((item, i) => ({ id: newUuid(), year: item.year, title: item.title, subtitle: item.subtitle, description: item.description, sort_order: i }));
+        await supabase.from('journey').insert(rows);
+        setJourney(withIds(initialJourney, 'journey'));
+      }
+      if (!docsRes.data?.length) {
+        const rows = loadInitialDocs().map((d) => ({ id: newUuid(), ...docToDb(d) }));
+        if (rows.length) await supabase.from('docs').insert(rows);
+      }
+      if (!projectsRes.data?.length) {
+        const rows = initialProjects.map((p, i) => ({ id: newUuid(), ...projectToDb(p), sort_order: i }));
+        await supabase.from('projects').insert(rows);
+      }
+      if (!skillsRes.data) await supabase.from('skills').upsert({ id: 1, data: initialSkills, updated_at: new Date().toISOString() });
+      if (!servicesRes.data?.length) {
+        const rows = initialServices.map((s, i) => ({ id: newUuid(), ...serviceToDb(s), sort_order: i }));
+        await supabase.from('services').insert(rows);
+      }
+      if (!certsRes.data?.length) {
+        const rows = DEFAULT_CERTIFICATIONS.map((c, i) => ({ id: newUuid(), ...certificationToDb(c), sort_order: i }));
+        await supabase.from('certifications').insert(rows);
+        setCertifications(withIds(DEFAULT_CERTIFICATIONS, 'cert'));
+      }
+      if (!pillarsRes.data?.length) {
+        const rows = DEFAULT_PILLARS.map((p, i) => ({ id: newUuid(), ...pillarToDb(p), sort_order: i }));
+        await supabase.from('pillars').insert(rows);
+        setPillars(withIds(DEFAULT_PILLARS, 'pillar'));
+      }
+    } catch (e) {
+      console.warn('syncLocalToSupabase failed:', e);
+    }
+  };
+
   // ---- Auth ----
   const loginAdmin = async (email, password) => {
     if (!supabase) {
@@ -632,6 +717,7 @@ export const DataProvider = ({ children }) => {
     if (data.user) {
       setIsAuthenticated(true);
       setIsAdminOpen(true);
+      await syncLocalToSupabase();
       showToast('Welcome back, Admin!');
       return true;
     }

@@ -18,6 +18,9 @@ import { DataProvider, useData } from './context/DataContext';
 
 const CV_PATH = '/assets/documents/Ndichia_Quincy_CV.pdf';
 
+// Hidden admin entry path. Override via VITE_ADMIN_PATH env var to keep it private.
+const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || 'nq-admin-x7k3';
+
 function PortfolioMain() {
   const [activeSection, setActiveSection] = useState('home');
   const { isAdminOpen, isAuthenticated, openAdminModal, closeAdminModal } = useData();
@@ -53,10 +56,10 @@ function PortfolioMain() {
     };
   }, []);
 
-  // Hidden admin entry: visit /#admin to open the login modal
+  // Hidden admin entry: visit /#<ADMIN_PATH> to open the login modal
   useEffect(() => {
     const openAdminFromHash = () => {
-      if (window.location.hash === '#admin') {
+      if (window.location.hash === `#${ADMIN_PATH}`) {
         openAdminModal();
       }
     };
