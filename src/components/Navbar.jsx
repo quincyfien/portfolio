@@ -4,7 +4,6 @@ import { useData } from '../context/DataContext';
 import './Navbar.css';
 
 const NAV_LINKS = [
-  { name: 'Home', id: 'home' },
   { name: 'About', id: 'about' },
   { name: 'How I Work', id: 'how-i-work' },
   { name: 'Skills', id: 'skills' },
@@ -45,11 +44,12 @@ export default function Navbar({ currentSection, onNavigate }) {
             e.preventDefault();
             handleLinkClick('home');
           }}
+          aria-label="Home"
+          title="Home"
         >
           <div className="monogram-seal" aria-hidden="true">
             {profile.avatarSymbol}
           </div>
-          <span className="nav-logo-text">{profile.name}</span>
         </a>
 
         <nav role="navigation" aria-label="Main navigation">

@@ -5,7 +5,15 @@ import { socialLinks } from '../data/socialLinks';
 import profileImg from '../assets/images/profile-placeholder.png';
 import './About.css';
 
-const INTERESTS = ['Cybersecurity', 'Cloud Tech', 'Linux Systems', 'Software Engineering', 'Technical Writing'];
+const INTERESTS = [
+  'System Engineering & Architecture',
+  'Cloud Infrastructure',
+  'Cybersecurity',
+  'Solution Engineering',
+  'Software Engineering',
+  'Automation & DevSecOps',
+  'AI-Assisted Development',
+];
 
 export default function About() {
   const { profile } = useData();
