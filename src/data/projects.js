@@ -1,6 +1,7 @@
 export const projects = [
   {
-    id: "circuit-forge",
+    id: "7b9a1c20-5f34-4b92-8e11-9a7c8d2e3f40",
+    slug: "circuit-forge",
     title: "Circuit Forge",
     description: "An e-commerce platform for custom PC building and optimization services.",
     longDescription: "Circuit Forge is a full-featured e-commerce platform tailored for custom PC builders and tech enthusiasts. It provides an intuitive interface for users to select compatible components, customize system configurations, and purchase pre-built or bespoke rigs. The system integrates real-time price tracking and inventory management to prevent stock mismatches during checkout.",
@@ -21,7 +22,8 @@ export const projects = [
     featured: true
   },
   {
-    id: "effica",
+    id: "8c0b2d31-6a45-4c03-9f22-0b8d9e3f4a51",
+    slug: "effica",
     title: "Effica — Enterprise Printing Press Management Platform",
     description: "Full-stack multi-branch printing press SaaS with Mobile Money payments, production workflow automation, and enterprise-grade security.",
     longDescription: "A comprehensive Django/PostgreSQL/Redis platform digitizing the entire lifecycle of a multi-branch printing business — from customer ordering and Tranzak Mobile Money payment processing to production QA state machine, inventory management with optimistic locking, cross-branch financial dashboards, and a 3-portal isolated architecture for customers, staff, and superusers. Features a custom WAF, hash-chained tamper-proof audit system, hybrid RBAC + ABAC access control, passwordless JWT Ghost authentication, and a CI/CD pipeline with 131 automated tests at 80% coverage.",
@@ -44,7 +46,8 @@ export const projects = [
     featured: true
   },
   {
-    id: "securebank-simulation",
+    id: "9d1c3e42-7b56-4d14-a033-1c9e0f4a5b62",
+    slug: "securebank-simulation",
     title: "SecureBank Incident Simulation",
     description: "A Red Team/Blue Team project involving exploitation and defense of an Ubuntu-based banking portal and Windows environments, configuring Suricata IDS.",
     longDescription: "This capstone project simulates real-world corporate intrusion. On the offensive (Red) side, I conducted web exploitation and privilege escalation. On the defensive (Blue) side, I hardened OS security, created firewall rules, deployed Suricata IDS, and constructed an incident response pipeline with detailed log reviews.",
@@ -64,7 +67,8 @@ export const projects = [
     featured: true
   },
   {
-    id: "malware-classification",
+    id: "ae2d4f53-8c67-4e25-b144-2daf1a5b6c73",
+    slug: "malware-classification",
     title: "Malware Classification System",
     description: "A machine learning project using Support Vector Machines and Neural Networks to automate malware detection based on static features.",
     longDescription: "This research-oriented project analyzes PE (Portable Executable) headers from the Microsoft Malware Dataset. By extracting static features such as API calls, section sizes, and entropy levels, it uses SVMs and Multi-Layer Perceptrons to classify binaries into malware families, achieving high accuracy with optimized hyperparameters.",
@@ -84,7 +88,8 @@ export const projects = [
     featured: true
   },
   {
-    id: "replicated-kv-store",
+    id: "bf3e5a64-9d78-4f36-8255-3eb02b6c7d84",
+    slug: "replicated-kv-store",
     title: "Replicated Key-Value Store",
     description: "A distributed systems project featuring synchronous replication, failure detection, and read-your-writes session consistency.",
     longDescription: "A fault-tolerant, high-performance distributed key-value store built in Python. The system employs a master-replica architecture with synchronous replication, node heartbeat monitoring, and read-your-writes session consistency to ensure client operations reflect their own updates immediately, even in the event of partial node failures.",

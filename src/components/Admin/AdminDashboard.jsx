@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Shield, LayoutDashboard, User, Briefcase, FileText, Settings, Plus, Trash2,
   Edit, Save, Download, Upload, RefreshCw, Eye, MoveUp, MoveDown, Sparkles,
-  FileCode, LogOut, Award, Layers, ExternalLink, Code,
+  FileCode, LogOut, Award, Layers, ExternalLink, Code, CloudUpload,
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { supabase } from '../../lib/supabase';
@@ -53,11 +53,12 @@ export default function AdminDashboard({ onClose }) {
     services, saveService, deleteService, reorderServices,
     certifications, saveCertification, deleteCertification, reorderCertifications,
     pillars, savePillar, deletePillar, reorderPillars,
-    resetToDefaults, exportData, importData,
+    resetToDefaults, exportData, importData, pushLocalToSupabase,
     logoutAdmin, showToast, isSupabaseConfigured,
   } = useData();
 
   const [activeTab, setActiveTab] = useState('overview');
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Profile
   const [profileForm, setProfileForm] = useState({ ...profile });
@@ -95,6 +96,21 @@ export default function AdminDashboard({ onClose }) {
 
   // System
   const [jsonImportInput, setJsonImportInput] = useState('');
+
+  // Sync forms with latest hydrated context data
+  useEffect(() => {
+    setProfileForm({ ...profile });
+  }, [profile]);
+
+  useEffect(() => {
+    setSkillsForm(JSON.parse(JSON.stringify(skills || {})));
+  }, [skills]);
+
+  const handlePushToServer = async () => {
+    setIsSyncing(true);
+    await pushLocalToSupabase();
+    setIsSyncing(false);
+  };
 
   // ---- Profile ----
   const handleProfileSave = (e) => { e.preventDefault(); updateProfile(profileForm); };
@@ -308,6 +324,21 @@ export default function AdminDashboard({ onClose }) {
             <span style={{ fontSize: '0.7rem', color: 'var(--color-gold)' }} title="Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to persist publicly.">
               Local-only mode
             </span>
+          )}
+          {isSupabaseConfigured && (
+            <button
+              onClick={handlePushToServer}
+              disabled={isSyncing}
+              className="btn-admin-nav"
+              title="Push your browser updates directly to the Supabase database"
+              style={{
+                borderColor: 'var(--color-gold)',
+                color: 'var(--color-gold-light)',
+                background: 'rgba(212, 175, 55, 0.15)',
+              }}
+            >
+              <CloudUpload size={16} /> {isSyncing ? 'Syncing...' : 'Sync to Server'}
+            </button>
           )}
           <button onClick={onClose} className="btn-admin-nav" title="View Live Portfolio Site"><Eye size={16} /> View Site</button>
           <button onClick={exportData} className="btn-admin-nav" title="Export Backup JSON"><Download size={16} /> Export Backup</button>
@@ -748,8 +779,25 @@ export default function AdminDashboard({ onClose }) {
           {/* ============ SYSTEM ============ */}
           {activeTab === 'system' && (
             <div className="tab-content">
-              <div className="tab-header"><h2>Backup & Settings</h2><p>Export, import, and reset your portfolio data.</p></div>
-              <div className="admin-card glass-panel">
+              <div className="tab-header"><h2>Backup & Settings</h2><p>Synchronize with server, export, import, and reset your portfolio data.</p></div>
+
+              <div className="admin-card glass-panel" style={{ borderColor: 'var(--color-gold)', boxShadow: '0 0 20px rgba(212, 175, 55, 0.1)' }}>
+                <h3 className="card-section-title" style={{ color: 'var(--color-gold-light)' }}><CloudUpload size={18} /> Push Local Changes to Production Server</h3>
+                <p className="card-desc">
+                  Synchronize all profile, milestone, project, skill, service, pillar, certification, and document updates from your browser directly into the Supabase database.
+                  Once synced, every visitor to your website will immediately see your updates.
+                </p>
+                <button
+                  onClick={handlePushToServer}
+                  disabled={isSyncing}
+                  className="btn-admin-primary margin-top-sm"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+                >
+                  <CloudUpload size={16} /> {isSyncing ? 'Pushing to Server...' : 'Push All Changes to Server'}
+                </button>
+              </div>
+
+              <div className="admin-card glass-panel margin-top-lg">
                 <h3 className="card-section-title"><Download size={18} /> Export / Backup</h3>
                 <p className="card-desc">Download your entire portfolio configuration as a JSON backup file.</p>
                 <button onClick={exportData} className="btn-admin-primary margin-top-sm"><Download size={16} /> Download Backup JSON</button>

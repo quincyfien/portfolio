@@ -103,6 +103,7 @@ async function upsertProfile() {
 
 async function upsertJourney() {
   const rows = journey.map((item, i) => ({
+    id: item.id,
     year: item.year,
     title: item.title,
     subtitle: item.subtitle,
@@ -127,6 +128,7 @@ async function upsertDocs() {
 
 async function upsertProjects() {
   const rows = projects.map((p, i) => ({
+    id: p.id,
     title: p.title,
     description: p.description,
     long_description: p.longDescription,
@@ -159,6 +161,7 @@ async function upsertSkills() {
 
 async function upsertServices() {
   const rows = services.map((s, i) => ({
+    id: s.id,
     title: s.title,
     icon: s.icon,
     tagline: s.tagline,
@@ -172,6 +175,90 @@ async function upsertServices() {
   console.log(`✓ services (${rows.length})`);
 }
 
+async function upsertCertifications() {
+  const defaultCertifications = [
+    {
+      id: 'b5e6f7a8-c9d0-4e1f-a23b-4c5d6e7f8a9b',
+      name: 'Fortinet NSE 1 & 2',
+      issuer: 'Fortinet',
+      status: 'Earned',
+      date: '',
+      credential_id: '',
+      verify_url: '',
+      sort_order: 0,
+    },
+    {
+      id: 'a6f7a8b9-d0e1-4f2a-b34c-5d6e7f8a9b0c',
+      name: 'AI & Data Science',
+      issuer: 'University of Tokyo',
+      status: 'In Progress',
+      date: '',
+      credential_id: '',
+      verify_url: '',
+      sort_order: 1,
+    },
+    {
+      id: '97a8b9c0-e1f2-4a3b-8c5d-6e7f8a9b0c1d',
+      name: 'Network Defense Essentials (NDE)',
+      issuer: 'EC-Council',
+      status: 'Planned',
+      date: '',
+      credential_id: '',
+      verify_url: '',
+      sort_order: 2,
+    },
+  ];
+  const { error } = await supabase.from('certifications').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  if (error) throw error;
+  const { error: insErr } = await supabase.from('certifications').insert(defaultCertifications);
+  if (insErr) throw insErr;
+  console.log(`✓ certifications (${defaultCertifications.length})`);
+}
+
+async function upsertPillars() {
+  const defaultPillars = [
+    {
+      id: '88b9c0d1-f2a3-4b4c-9d6e-7f8a9b0c1d2e',
+      title: 'Design & Requirements',
+      description: 'Every system starts on paper. I translate a need into precise requirements before a single line is written.',
+      items: [
+        'Software Requirements Specifications (SRS)',
+        'Requirement traces and wireframes',
+        'System architecture and data modeling',
+        'QA-lead review and acceptance criteria',
+      ],
+      sort_order: 0,
+    },
+    {
+      id: '79c0d1e2-a3b4-4c5d-9e7f-8a9b0c1d2e3f',
+      title: 'Document & Communicate',
+      description: 'I hand off specs a developer or an AI can implement without guessing — security and decisions already resolved.',
+      items: [
+        'Ready-to-implement technical documentation',
+        'API contracts and integration guides',
+        'Demos, READMEs, and developer-facing docs',
+      ],
+      sort_order: 1,
+    },
+    {
+      id: '6ad1e2f3-b4c5-4d6e-9f8a-9b0c1d2e3f4a',
+      title: 'Build & Secure',
+      description: 'I use AI-assisted implementation to turn the spec into a working, secured system.',
+      items: [
+        'AI-assisted implementation from spec to system',
+        'Secure-by-design application layers',
+        'Verification, testing, and hardening',
+      ],
+      sort_order: 2,
+    },
+  ];
+  const { error } = await supabase.from('pillars').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  if (error) throw error;
+  const { error: insErr } = await supabase.from('pillars').insert(defaultPillars);
+  if (insErr) throw insErr;
+  console.log(`✓ pillars (${defaultPillars.length})`);
+}
+
 async function main() {
   await upsertProfile();
   await upsertJourney();
@@ -179,7 +266,9 @@ async function main() {
   await upsertProjects();
   await upsertSkills();
   await upsertServices();
-  console.log('\nSeed complete. Certifications and How-I-Work pillars start empty (add via admin).');
+  await upsertCertifications();
+  await upsertPillars();
+  console.log('\nSeed complete. All portfolio tables populated with valid UUIDs.');
 }
 
 main().catch((e) => {

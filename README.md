@@ -26,6 +26,7 @@ npm run dev        # development server
 npm run build      # production build
 npm run preview    # preview production build
 npm run lint       # lint
+npm run sync-data  # sync live Supabase data into local src/data files
 ```
 
 ## Supabase setup (content backend)
