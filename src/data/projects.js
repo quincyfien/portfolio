@@ -1,111 +1,37 @@
 export const projects = [
   {
-    id: "7b9a1c20-5f34-4b92-8e11-9a7c8d2e3f40",
-    slug: "circuit-forge",
-    title: "Circuit Forge",
-    description: "An e-commerce platform for custom PC building and optimization services.",
-    longDescription: "Circuit Forge is a full-featured e-commerce platform tailored for custom PC builders and tech enthusiasts. It provides an intuitive interface for users to select compatible components, customize system configurations, and purchase pre-built or bespoke rigs. The system integrates real-time price tracking and inventory management to prevent stock mismatches during checkout.",
-    technologies: ["Python", "Django", "JavaScript", "HTML", "CSS", "PostgreSQL", "Docker"],
-    features: [
-      "Secure user authentication and profile management.",
-      "Dynamic component compatibility checker (CPU, RAM, Motherboard).",
-      "Interactive shopping cart and multistep checkout workflow.",
-      "Real-time inventory tracking and automatic restocking alerts.",
-      "Comprehensive admin dashboard for order processing and user analytics.",
-      "Fully responsive, elegant, glassmorphic layout."
+    "id": "80f302b8-fdfe-4fd8-aef0-fd1746e55358",
+    "title": "Point-of-Sale Credit Risk Prediction Pipeline",
+    "description": "An end-to-end credit risk modeling pipeline and system architecture for thin-file retail lending, utilizing LightGBM and leak-free 5-Fold Stratified Cross-Validation to improve baseline ROC-AUC from 0.669 to 0.761 (+9.2%).",
+    "longDescription": "Designed an automated credit scoring engine for point-of-sale consumer financing where instantaneous, millisecond underwriting decisions are required for thin-file applicants with no prior credit bureau history. Authored a comprehensive System Requirements and System Design Document detailing downstream API contracts, schema parity invariants, and defensive data validation before model training.\n\nKey Engineering Highlights\n\nData Hygiene & Anomaly Resolution: Handled domain-specific database sentinels (including the DAYS_EMPLOYED = 365243 placeholder for pensioners/unemployed) by converting them into missing values and engineering explicit missingness indicator flags to prevent tree split distortion.\n\nDomain Feature Engineering: Formulated financial interaction ratios including Debt Burden (AMT_CREDIT / AMT_INCOME_TOTAL), Payment Rate (AMT_ANNUITY / AMT_CREDIT), Loan-to-Value (AMT_CREDIT / AMT_GOODS_PRICE), and statistical aggregations (mean, min, max, std) across external credit bureau ratings.\n\nLeak-Free Validation Architecture: Built an automated 5-Fold Stratified Cross-Validation framework ensuring all encoding, transformations, and imputations were strictly fitted inside training folds to eliminate target leakage.\n\nDefensive Integrity Checks: Enforced runtime assertions validating row counts, schema alignment, missing prediction checks, and continuous probability bounds \n[\n0.0\n,\n1.0\n]\n[0.0,1.0].\n\nMeasurable Results\n\nBaseline ROC-AUC: 0.669 (Random Forest on 5 features)\n\nFinal Model Performance: 0.76064 Out-Of-Fold (OOF) ROC-AUC\n\nCross-Validation Stability: Fold Mean 0.76070 \n±\n± 0.00363 across all 5 test slices",
+    "technologies": [
+      "Python",
+      "LightGBM",
+      "Scikit-Learn",
+      "Feature Engineering System",
+      "Architecture",
+      "Risk Modeling",
+      "Cross-Validation"
     ],
-    challengesSolved: "Solving the hardware compatibility logic was a major hurdle. I designed a relational database schema mapping socket types, power requirements, and dimension parameters, using Django signals to evaluate compatibilities before items enter the cart.",
-    lessonsLearned: "I deepened my knowledge of Docker containerization for Django and PostgreSQL services, and learned how to build robust, normalized SQL schemas for intricate e-commerce catalogs.",
-    githubLink: "",
-    demoLink: "",
-    tags: ["E-Commerce", "Full-Stack", "Web Development"],
-    featured: true
-  },
-  {
-    id: "8c0b2d31-6a45-4c03-9f22-0b8d9e3f4a51",
-    slug: "effica",
-    title: "Effica — Enterprise Printing Press Management Platform",
-    description: "Full-stack multi-branch printing press SaaS with Mobile Money payments, production workflow automation, and enterprise-grade security.",
-    longDescription: "A comprehensive Django/PostgreSQL/Redis platform digitizing the entire lifecycle of a multi-branch printing business — from customer ordering and Tranzak Mobile Money payment processing to production QA state machine, inventory management with optimistic locking, cross-branch financial dashboards, and a 3-portal isolated architecture for customers, staff, and superusers. Features a custom WAF, hash-chained tamper-proof audit system, hybrid RBAC + ABAC access control, passwordless JWT Ghost authentication, and a CI/CD pipeline with 131 automated tests at 80% coverage.",
-    technologies: ["Django", "PostgreSQL", "Redis", "Celery", "Nginx", "Docker", "Python", "JWT", "Tranzak API", "Google OAuth", "Prometheus"],
-    features: [
-      "Three-portal architecture (customer, staff, admin) with middleware-level access gating.",
-      "Passwordless JWT Ghost authentication with bcrypt-hashed OTPs, CAPTCHA fallback, and rate limiting.",
-      "Hybrid RBAC + ABAC access control with contextual policies (discount approvals, machine scheduling).",
-      "Tranzak Mobile Money integration with HMAC-SHA256 webhook verification and idempotency keys.",
-      "Hash-chained tamper-proof audit logging — each record cryptographically linked to the previous one.",
-      "Custom WAF middleware detecting SQL injection, XSS, malicious bots, and Slowloris DoS at the request layer.",
-      "Production workflow state machine (Draft → QA Review → Ready for Delivery) enforced by django-fsm.",
-      "CI/CD pipeline with Bandit SAST, 131 automated tests, and an 80% code coverage quality gate."
+    "features": [
+      "Comprehensive 15-page System Design Document & API serving contract defined prior to model execution\nLeak-free 5-Fold Stratified Cross-Validation framework with automated out-of-fold scoring\nAutomated anomaly detection and sanitization for legacy database sentinels (e.g.",
+      "DAYS_EMPLOYED = 365243)\nDomain financial feature engineering: Debt-to-Income",
+      "Payment Rate",
+      "and Loan-to-Value ratios\nStatistical aggregation engine synthesizing external credit bureau ratings (mean",
+      "min",
+      "max",
+      "std)\nHigh-performance gradient boosting architecture using LightGBM with automated early stopping\nStrict pipeline isolation ensuring encoders and transformations fit exclusively on training folds\nDefensive runtime assertion layer validating row counts",
+      "schema parity",
+      "and probability bounds [0.0",
+      "1.0]"
     ],
-    challengesSolved: "Multi-branch data isolation was the hardest problem — enforcing strict query-level separation between print shop branches while allowing controlled cross-branch access for finance officers required a layered middleware and permission architecture. Mobile Money payment integrity was equally critical: implementing HMAC-SHA256 webhook verification, UUID-based idempotency keys, and a 3-state payment FSM to prevent double-charging and replay attacks. The 575+ printing service subtypes demanded a normalized catalog schema that could evolve without breaking existing orders.",
-    lessonsLearned: "Security must be architected from day one — the WAF, RBAC, ABAC, audit logging, and encryption layers were all designed into the initial architecture rather than retrofitted. File upload security in a printing platform is fundamentally different from generic web apps: customer PDFs and design files need content-based malware scanning, magic-byte validation, and sandboxed processing — extension blocking alone is insufficient. CI/CD requires layered scanning: SAST for code vulnerabilities plus SCA for dependency vulnerabilities; one without the other leaves blind spots.",
-    githubLink: "",
-    demoLink: "",
-    tags: ["Full-Stack", "Web Development", "Systems"],
-    featured: true
-  },
-  {
-    id: "9d1c3e42-7b56-4d14-a033-1c9e0f4a5b62",
-    slug: "securebank-simulation",
-    title: "SecureBank Incident Simulation",
-    description: "A Red Team/Blue Team project involving exploitation and defense of an Ubuntu-based banking portal and Windows environments, configuring Suricata IDS.",
-    longDescription: "This capstone project simulates real-world corporate intrusion. On the offensive (Red) side, I conducted web exploitation and privilege escalation. On the defensive (Blue) side, I hardened OS security, created firewall rules, deployed Suricata IDS, and constructed an incident response pipeline with detailed log reviews.",
-    technologies: ["Linux", "Suricata IDS", "Networking", "Penetration Testing", "Incident Response", "Nmap", "Wireshark", "Bash"],
-    features: [
-      "Vulnerability assessment and automated scanning using Nmap and OpenVAS.",
-      "Exploitation of SQL Injection and Remote Code Execution vectors on a banking portal.",
-      "Suricata IDS setup with customized rules to detect malicious web traffic.",
-      "Incident logging, traffic analysis in Wireshark, and post-incident reporting.",
-      "Hardening of Ubuntu systems using fail2ban, iptables, and disabled unused ports."
+    "challengesSolved": "Database Sentinel Code Distortion:\nThe dataset contained legacy database placeholder codes like DAYS_EMPLOYED = 365243 (~1,000 years, indicating pensioners or unemployed applicants). Left unhandled, these distorted numeric scales and tree splits. Resolved this by replacing sentinels with null values and engineering an explicit binary anomaly indicator (DAYS_EMPLOYED_ANOM) to preserve the behavioral signal without skewing numerical distributions.\n\nSilent Data Leakage in Preprocessing:\nStandard starter workflows frequently fit encoders and imputers globally across the entire dataset prior to splitting, introducing data leakage and overly optimistic validation scores. Eliminated this risk by enforcing strict pipeline containment, fitting all categorical encoders and imputations strictly inside the training partitions of each fold during 5-Fold Stratified Cross-Validation \n\nLow Predictive Signal on Thin-File Borrowers:\nStatic application snapshots with only 32 features lacked historical repayment logs. Raw numbers (such as absolute income) failed to measure default risk effectively. Resolved this by engineering interaction ratios that capture relative credit burden—such as Payment Rate (AMT_ANNUITY / AMT_CREDIT) and Credit-to-Income—along with statistical summaries across external bureau scores, elevating the ROC-AUC from 0.669 to 0.761.",
+    "lessonsLearned": "Navigating the Bayes Error Rate (Deterministic vs. Stochastic Systems):\nIn systems and software engineering, functionality is typically deterministic: code either succeeds or fails. In credit risk, human behavior is stochastic and subject to unrecorded future events (such as illness or job loss months after approval). Understanding irreducible error (the Bayes error bound) clarified why an AUC of 1.0 is a mathematical impossibility on static snapshot data, reframing the goal from chasing impossible metrics to maximizing reliable probabilistic separation (~0.76–0.78).\n\nSpecification-First Architecture:\nDrafting a complete System Design Document and formalizing input/output serving contracts before touching model code drastically reduced development friction. Establishing data invariants, non-goals, and schema constraints upfront prevented architectural errors during implementation.\n\nDefensive Machine Learning Pipelines:\nMachine learning models silently degrade if input shapes or outputs shift. Implementing automated sanity assertions—checking for schema parity, row counts (61,500), nulls, and continuous decimal ranges [0.0, 1.0]—ensured the final deliverable met deployment standards without risking broken downstream integrations.",
+    "githubLink": "",
+    "demoLink": "",
+    "tags": [
+      "Machine Learning / Fintech"
     ],
-    challengesSolved: "Differentiating between legitimate high traffic and slow, low-intensity scan patterns in Suricata was difficult. I researched and engineered precise threshold rules that reduced false alarms by 85% while catching stealthy Nmap scans.",
-    lessonsLearned: "Obtained deep practical understanding of packet inspection, firewall management, system logs, and security monitoring workflows essential for Security Operations Centers (SOC).",
-    githubLink: "https://github.com/ndichia-quincy/securebank-simulation",
-    demoLink: "https://securebank-simulation.example.com",
-    tags: ["Cybersecurity", "Incident Response", "Networking"],
-    featured: true
-  },
-  {
-    id: "ae2d4f53-8c67-4e25-b144-2daf1a5b6c73",
-    slug: "malware-classification",
-    title: "Malware Classification System",
-    description: "A machine learning project using Support Vector Machines and Neural Networks to automate malware detection based on static features.",
-    longDescription: "This research-oriented project analyzes PE (Portable Executable) headers from the Microsoft Malware Dataset. By extracting static features such as API calls, section sizes, and entropy levels, it uses SVMs and Multi-Layer Perceptrons to classify binaries into malware families, achieving high accuracy with optimized hyperparameters.",
-    technologies: ["Python", "Machine Learning", "SVM", "Neural Networks", "Data Analysis", "Scikit-Learn", "Pandas"],
-    features: [
-      "Static feature extraction pipeline from binary headers.",
-      "Comparative analysis between Support Vector Machines and Neural Network architectures.",
-      "Feature selection algorithms reducing dimensionality with minimal information loss.",
-      "Evaluation metrics showing confusion matrices, precision, recall, and ROC curves.",
-      "Interactive command-line tool to analyze and classify uploaded binaries."
-    ],
-    challengesSolved: "Handling class imbalance in the dataset was crucial to avoid skewed results. I utilized SMOTE (Synthetic Minority Over-sampling Technique) and tuned hyperparameter regularization matrices (C-value in SVM, learning rates in MLP) to boost the recall rate of rare malware variants.",
-    lessonsLearned: "Learned the mathematical foundations of SVM kernels and how to tune multilayer perceptron layers. Acquired practical knowledge in threat intelligence and static analysis of suspicious executables.",
-    githubLink: "https://github.com/ndichia-quincy/malware-classification",
-    demoLink: "https://malware-classifier-demo.example.com",
-    tags: ["Cybersecurity", "Machine Learning", "Data Science"],
-    featured: true
-  },
-  {
-    id: "bf3e5a64-9d78-4f36-8255-3eb02b6c7d84",
-    slug: "replicated-kv-store",
-    title: "Replicated Key-Value Store",
-    description: "A distributed systems project featuring synchronous replication, failure detection, and read-your-writes session consistency.",
-    longDescription: "A fault-tolerant, high-performance distributed key-value store built in Python. The system employs a master-replica architecture with synchronous replication, node heartbeat monitoring, and read-your-writes session consistency to ensure client operations reflect their own updates immediately, even in the event of partial node failures.",
-    technologies: ["Python", "Distributed Systems", "Networking", "System Design", "Sockets", "JSON-RPC"],
-    features: [
-      "Master-replica network topologies utilizing TCP sockets.",
-      "Synchronous write propagation with quorum acknowledgement.",
-      "Read-your-writes consistency via tracking client vector clocks.",
-      "Automatic heartbeat monitoring and failure detection using ping-ack loops.",
-      "Elegant command-line interface to spawn, inspect, and crash cluster nodes."
-    ],
-    challengesSolved: "Maintaining session consistency during network partitions or node dropouts was complex. I implemented vector clocks and logical timestamps on clients, allowing replicas to serve correct historical data based on client-specific session states.",
-    lessonsLearned: "Gained hands-on experience with network sockets, concurrent thread execution, state synchronization, and distributed consensus challenges like the CAP theorem.",
-    githubLink: "https://github.com/ndichia-quincy/replicated-kv-store",
-    demoLink: "https://kv-store-demo.example.com",
-    tags: ["Systems", "Distributed Systems", "Networking"],
-    featured: false
+    "featured": false
   }
 ];

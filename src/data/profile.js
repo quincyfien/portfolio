@@ -1,31 +1,29 @@
 export const profile = {
-  name: "NDICHIA QUINCY FIEN",
-  title: "Systems Engineer → Aspiring Cloud Security Engineer",
-  headline: "Design the system, document it, ship it securely",
-  avatarSymbol: "NQ",
-  // To swap to your real photo: place your image in src/assets/images/ and update this path.
-  // The component imports this dynamically so no other code needs to change.
-  photoPath: "/src/assets/images/profile-placeholder.png",
-  email: "ndichiaquincyfien@gmail.com",
-  bio: "I design systems end-to-end, write the ready-to-implement documentation that builds them, and secure every layer as I go — so an AI or any developer can implement without worrying about anything but implementation-level details.",
-  summary: "A Systems Engineer evolving into a Cloud Security Engineer. My strength is turning a requirement into a complete, secure system design — then producing the specifications, architecture, and documentation that an AI or a developer can implement directly. I build with AI-assisted workflows, and I write the documentation before the code, so security is baked in from the first line.",
-  education: [
+  "name": "NDICHIA QUINCY FIEN",
+  "title": "Systems Engineer → Cloud Security Engineer",
+  "headline": "Systems Engineer → Cloud Security Engineer",
+  "avatarSymbol": "QF",
+  "photoPath": "/src/assets/images/profile-placeholder.png",
+  "email": "quincyfien99@gmail.com",
+  "bio": "I care about thoroughly understanding the business need first, then assessing what is technically feasible and identifying the most suitable solution to the problem. I document the process from requirements through architecture and implementation details, so that any capable technical person working from those documents has a clear understanding of what needs to be built and why.",
+  "summary": "I’ve always been curious about how life works, the laws that govern it, human behavior, emotions, people, and the systems that connect everything together. In a way, Systems Engineering gives me a place to express that curiosity.\n\nI enjoy taking complex systems apart, understanding how they work at their core, and seeing how the different pieces fit together. I also consider myself creative: once I understand an existing system, I like building on that knowledge, challenging assumptions, and finding my own way to improve or reshape it.\n\nFor me, engineering is not just about building things. It’s about understanding deeply enough to create something meaningful from what I’ve learned.",
+  "education": [
     {
-      degree: "Professional Master's degree in Cybersecurity",
-      institution: "University of Bamenda",
-      status: "Graduate Student"
+      "degree": "Professional Master's degree in Cybersecurity",
+      "status": "Graduate Student",
+      "institution": "University of Bamenda"
     },
     {
-      degree: "Bachelor of Science in Physics",
-      institution: "University of Bamenda",
-      status: "Completed"
+      "degree": "Bachelor of Science in Physics",
+      "status": "Completed",
+      "institution": "University of Bamenda"
     }
   ],
-  aboutDetails: [
-    "Systems engineer who designs secure systems and produces ready-to-implement documentation — requirements, architecture, and specs that AI or developers can build from directly.",
-    "Pursuing a Professional Master's degree in Cybersecurity, specializing in secure systems design, threat analysis, and cloud security.",
+  "aboutDetails": [
     "Holder of a Bachelor of Science in Physics, providing a foundation in analytical thinking, mathematics, and first-principles problem-solving.",
-    "Builds with AI-assisted workflows: design and document first, then implement and secure every layer as I go.",
-    "Technical writer at heart — I document architecture and security requirements before any code, so the build is guided by a complete picture of the system."
+    "Pursuing a Professional Master's degree in Cybersecurity at the University of Bamenda, specializing in secure systems design, threat analysis, and cloud security.",
+    "Systems Engineer proficient in systems analysis, technical documentation, and end-to-end solution design, with working knowledge of cloud, cybersecurity, networking, and software development.",
+    "Strong technical writer: I document architecture and security requirements before writing code, so the build is guided by a complete picture of the system.",
+    "Committed to writing secure code from the start,  applying security at every stage of development, not as an afterthought."
   ]
 };

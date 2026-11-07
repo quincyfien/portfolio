@@ -17,7 +17,7 @@ const NAV_LINKS = [
 
 export default function Navbar({ currentSection, onNavigate }) {
   const { profile } = useData();
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
